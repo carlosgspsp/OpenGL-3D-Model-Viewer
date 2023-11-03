@@ -30,6 +30,7 @@
     <ClCompile Include="imgui-1.89.9-docking\imgui_widgets.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -68,6 +69,7 @@
     <ClInclude Include="imgui-1.89.9-docking\imstb_truetype.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />

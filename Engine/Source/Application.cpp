@@ -5,6 +5,7 @@
 #include "ModuleInput.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleEditor.h"
+#include "ModuleDebugDraw.h"
 
 
 using namespace std;
@@ -17,6 +18,7 @@ Application::Application()
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(render_exercise = new ModuleRenderExercise());
 	modules.push_back(editor = new ModuleEditor());
+	modules.push_back(debug_draw = new ModuleDebugDraw());
 }
 
 Application::~Application()

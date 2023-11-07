@@ -7,7 +7,7 @@
 #include ".\backends\imgui_impl_opengl3.h"
 
 ModuleEditor::ModuleEditor() {
-	
+	context = nullptr;
 }
 ModuleEditor::~ModuleEditor() {
 

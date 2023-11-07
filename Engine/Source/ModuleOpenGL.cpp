@@ -38,6 +38,8 @@ static void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint 
 
 ModuleOpenGL::ModuleOpenGL()
 {
+	context = nullptr;
+
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // desired version
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
@@ -85,15 +87,18 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
+
+	int w;
+	int h;
+	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+	glViewport(0, 0, w, h);
+
 	return true;
 }
 
 update_status ModuleOpenGL::PreUpdate()
 {
-	int w;
-	int h;
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-	glViewport(0, 0, w, h);
+	
 	glClearColor(0.4f, 0.3f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -128,7 +133,10 @@ bool ModuleOpenGL::CleanUp()
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
-	
+	int w;
+	int h;
+	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+	glViewport(0, 0, w, h);
 }
 
 

@@ -18,7 +18,7 @@ class ModuleEditor : public Module
 
 
 	private:
-		ImGuiIO io;
+		ImGuiIO *io;
 		void* context;
 	
 

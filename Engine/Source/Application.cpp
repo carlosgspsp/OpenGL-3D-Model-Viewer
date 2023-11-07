@@ -6,6 +6,7 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleCamera.h"
 
 
 using namespace std;
@@ -19,6 +20,7 @@ Application::Application()
 	modules.push_back(render_exercise = new ModuleRenderExercise());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(debug_draw = new ModuleDebugDraw());
+	modules.push_back(camera = new ModuleCamera());
 }
 
 Application::~Application()

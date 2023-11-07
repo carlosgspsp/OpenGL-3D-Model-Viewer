@@ -5,6 +5,7 @@
 #include <.\GL\glew.h>
 #include <iostream>
 #include "ModuleDebugDraw.h"
+#include "ModuleCamera.h"
 #include "DebugDraw.h"
 
 
@@ -31,6 +32,11 @@ bool ModuleRenderExercise::Init() {
 	unsigned fragment_shader_id = program.CompileShader(GL_FRAGMENT_SHADER, fragment_shader_source);
 
 	program_id = program.CreateProgram(vertex_shader_id, fragment_shader_id);
+
+
+
+	ModuleCamera* camera = App->GetCamera();
+
 	return true;
 }
 

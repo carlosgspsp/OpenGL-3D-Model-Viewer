@@ -21,6 +21,7 @@ private:
 	ModuleProgram program;
 	unsigned vbo;
 	unsigned program_id;
+	unsigned texture_id;
 
 	unsigned CreateTriangleVBO();
 	void RenderVBO(unsigned vbo);

@@ -129,6 +129,7 @@
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -352,6 +353,7 @@
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />

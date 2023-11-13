@@ -18,13 +18,14 @@ public:
 	void SetPlaneDistances();
 	void SetPosition();
 	void SetOrientation();
-	void LookAt(int x, int y, int z);
-	void GetProjectionMatrix();
-	void GetViewMatrix();
+	void LookAt(float x, float y, float z);
+	float4x4 GetProjectionMatrix();
+	float4x4 GetViewMatrix();
 
 
 private:
 
-	Frustum frustum;
+	Frustum* frustum;
+	float4x4* camera_matrix;
 };
 

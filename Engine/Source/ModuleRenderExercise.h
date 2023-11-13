@@ -28,6 +28,7 @@ private:
 	void DestroyVBO(unsigned vbo);
 	float4x4 LookAt(float3 camera_pos, float3 target_pos, float3 up_vector);
 	
-	
+	ModuleCamera* camera;
+
 };
 

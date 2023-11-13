@@ -35,8 +35,7 @@ bool ModuleRenderExercise::Init() {
 	program_id = program.CreateProgram(vertex_shader_id, fragment_shader_id);
 
 
-
-	ModuleCamera* camera = App->GetCamera();
+	camera = App->GetCamera();
 
 	return true;
 }
@@ -119,40 +118,32 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
 
 
-	float4x4 model, camera, view, proj;
+	float4x4 model_matrix, camera_matrix, view_matrix, proj_matrix;
 
 	float3 translation(0.0f, 0.0f, 0.0f);
 
-	float3 camera_pos(0.0f, 4.0f, 8.0f);
-	float3 target_pos(0.0f, 0.0f, 0.0f);
+	//float3 camera_pos(0.0f, 4.0f, 8.0f);
+	//float3 target_pos(0.0f, 0.0f, 0.0f);
 
-	model = float4x4::FromTRS(translation, float4x4::RotateZ(0), float3(1.0f, 1.0f, 1.0f));
+	model_matrix = float4x4::FromTRS(translation, float4x4::RotateZ(0), float3(1.0f, 1.0f, 1.0f));
 	
-	camera = LookAt(camera_pos, target_pos, float3::unitY);
+	//camera_matrix = LookAt(camera_pos, target_pos, float3::unitY);
 
 	//float4x4 multiplication_matrix(float4(1,0,0,0), float4(0,1,0,0), float4(0,0,1,0), float4(-translation[0], -translation[1], -translation[2], 1));
 
 	//view = camera.Transposed() * multiplication_matrix;
-	view = camera.Inverted();
+	//view_matrix = camera_matrix.Inverted();
 
-	Frustum frustum;
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
+	//camera->LookAt(2.0f,0.0f,2.0f);
+	view_matrix = camera->GetViewMatrix();
 
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0;
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) * ((float)(w))/((float)(h));
-	
 	//view = frustum.ViewMatrix();
-	proj = frustum.ProjectionMatrix();
+	proj_matrix = camera->GetProjectionMatrix();
 	
 	
 	dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 	dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
-	App->GetDebugDraw()->Draw(view, proj,w, h);
+	App->GetDebugDraw()->Draw(view_matrix, proj_matrix,w, h);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glEnableVertexAttribArray(0);
@@ -173,9 +164,9 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	glUseProgram(program_id);
 	// 1 triangle to draw = 3 vertices
 
-	glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
-	glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+	glUniformMatrix4fv(0, 1, GL_TRUE, &model_matrix[0][0]);
+	glUniformMatrix4fv(1, 1, GL_TRUE, &view_matrix[0][0]);
+	glUniformMatrix4fv(2, 1, GL_TRUE, &proj_matrix[0][0]);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, &vbo);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	

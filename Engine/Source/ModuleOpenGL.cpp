@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "SDL.h"
 #include <.\GL\glew.h>
 
@@ -133,10 +134,9 @@ bool ModuleOpenGL::CleanUp()
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
-	int w;
-	int h;
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-	glViewport(0, 0, w, h);
+	
+	glViewport(0, 0, width, height);
+	App->GetCamera()->SetAspectRatio((float)width/(float)height);
 }
 
 

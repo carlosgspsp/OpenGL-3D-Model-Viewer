@@ -1,6 +1,9 @@
 #pragma once
 #include "Module.h"
 #include <MathGeoLib.h>
+#include "SDL.h"
+
+
 class ModuleCamera :
     public Module
 {
@@ -13,12 +16,13 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	//bool CleanUp();
-	void SetFOV(float Horizontal_FOV);
-	void SetAspectRatio(float Aspect_Ratio);
-	void SetPlaneDistances();
-	void SetPosition();
+	void SetFOV(float horizontalFOV);
+	void SetAspectRatio(float aspectRatio);
+	void SetPlaneDistances(float nearPlane, float farPlane);
+	void SetPosition(float x, float y, float z);
 	void SetOrientation();
-	void LookAt(float x, float y, float z);
+	void LookAt(float3 target_pos);
+	void ManageInput(SDL_Event *sdlEvent);
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 

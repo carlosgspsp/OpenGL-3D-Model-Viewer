@@ -135,6 +135,7 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	//view_matrix = camera_matrix.Inverted();
 
 	//camera->LookAt(2.0f,0.0f,2.0f);
+	//camera->SetFOV(90.0f);
 	view_matrix = camera->GetViewMatrix();
 
 	//view = frustum.ViewMatrix();

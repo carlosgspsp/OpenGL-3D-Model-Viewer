@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleOpenGL.h"
+#include "ModuleCamera.h"
 #include "SDL/include/SDL.h"
 #include <backends/imgui_impl_sdl2.h>
 
@@ -43,10 +44,14 @@ update_status ModuleInput::Update()
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                     App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
                 break;
+            case SDL_KEYDOWN:
+                App->GetCamera()->ManageInput( &sdlEvent);
+                break;
+                
         }
         ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
     }
-
+    //sdlEvent.key.keysym;
     keyboard = SDL_GetKeyboardState(NULL);
 
  

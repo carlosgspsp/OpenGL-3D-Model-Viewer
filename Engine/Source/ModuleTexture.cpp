@@ -78,7 +78,7 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage img) {
 
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, metadata.width, metadata.height, 0, format, type, img.GetPixels());
 
-	if (metadata.mipLevels > 0) {
+	if (metadata.mipLevels > -1) {
 		for (size_t i = 0; i < metadata.mipLevels; ++i) {
 			const DirectX::Image* mip = img.GetImage(i, 0, 0);
 			glTexImage2D(GL_TEXTURE_2D, i, internalFormat, mip->width, mip->height, 0, format, type, mip->pixels);

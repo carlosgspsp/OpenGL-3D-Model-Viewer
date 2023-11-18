@@ -22,13 +22,13 @@ public:
 	void SetPosition(float x, float y, float z);
 	void SetOrientation();
 	void LookAt(float3 target_pos);
-	void ManageInput(SDL_Event *sdlEvent);
+	void ManageInput();
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 
 
 private:
-
+	float camera_speed = 0.1f;
 	Frustum* frustum;
 	float4x4* camera_matrix;
 };

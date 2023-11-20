@@ -400,5 +400,5 @@ FodyWeavers.xsd
 
 
 !/Engine/Source/Dependencies/SDL/lib/x64/
-!/Engine/Dependencies/glew-2.1.0/lib/Release/x64/
+!/Engine/Source/Dependencies/glew-2.1.0/lib/Release/x64/
 #!/Engine/Dependencies/glew-2.1.0/bin/Release/x64/

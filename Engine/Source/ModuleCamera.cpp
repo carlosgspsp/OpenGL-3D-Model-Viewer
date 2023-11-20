@@ -20,12 +20,12 @@ bool ModuleCamera::Init()
 {
 	frustum = new Frustum();
 	camera_matrix = new float4x4();
-	
 
-	int w;
-	int h;
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
 
+	//int w;
+	//int h;
+	//SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+	float2 screenSize = App->GetWindow()->GetScreenSize();
 
 	frustum->type = FrustumType::PerspectiveFrustum;
 	//frustum->pos = float3::zero;
@@ -34,12 +34,23 @@ bool ModuleCamera::Init()
 	//frustum->up = float3::unitY;
 	frustum->nearPlaneDistance = 0.1f;
 	frustum->farPlaneDistance = 100.0f;
-	frustum->verticalFov = math::pi / 4.0;
-	frustum->horizontalFov = 2.0f * atanf(tanf(frustum->verticalFov * 0.5f)) * ((float)(w)) / ((float)(h));
-	
-	//SetFOV(90.0f);
+	frustum->verticalFov = math::pi / 4.0f;
+	//frustum->horizontalFov = 2.0f * atanf(tanf(frustum->verticalFov * 0.5f)) * ((float)(w)) / ((float)(h));
+	frustum->horizontalFov = 2.0f * atanf(tanf(frustum->verticalFov * 0.5f) * screenSize.x / screenSize.y);
+	float angle = RadToDeg(frustum->horizontalFov);
+
+	//SetFOV(61.39f);
 	//SetAspectRatio(16.0f/9.0f);
 	LookAt(float3(0.0f, 0.0f, 0.0f));
+
+	angle = RadToDeg(frustum->verticalFov);
+
+	deltaTime = 0.0f;
+	lastFrame = 0.0f;
+
+	mouseSensitivity = float2(0.1f, 0.1f);
+	yaw = -90.0f;
+	pitch = 0.0f;
 
 	return true;
 }
@@ -52,7 +63,7 @@ float4x4 ModuleCamera::GetProjectionMatrix() {
 float4x4 ModuleCamera::GetViewMatrix() {
 	//*camera_matrix = LookAt(0, 0, 0);
 	//LookAt(frustum->front);
-	
+
 	//float4x4 view_matrix = camera_matrix->Inverted();
 	float4x4 view_matrix = frustum->ViewMatrix();
 	return view_matrix;
@@ -73,15 +84,23 @@ void ModuleCamera::LookAt(float3 target_pos) {
 
 
 void ModuleCamera::SetFOV(float horizontalFOV) { //DEBUGEAR
-	float aspectRatio = frustum->AspectRatio();
-	float aspect1 = tanf(frustum->horizontalFov / 2.0f) / tanf(frustum->verticalFov / 2.0f);
-	frustum->horizontalFov = horizontalFOV * (pi/180.0f);
+	//int w;
+	//int h;
+	//SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
 
-	frustum->verticalFov = 2.0f * atanf(tanf(horizontalFOV * 0.5f)) * (1.0f/aspect1);
+	float2 screenSize = App->GetWindow()->GetScreenSize();
+
+	//float aspectRatio = frustum->AspectRatio();
+	//float aspect1 = tanf(frustum->horizontalFov / 2.0f) / tanf(frustum->verticalFov / 2.0f);
+	float aspect_normal = screenSize.x / screenSize.y;
+	frustum->horizontalFov = DegToRad(horizontalFOV);
+
+	frustum->verticalFov = 2.0f * atanf(tanf(frustum->horizontalFov * 0.5f) * (1.0f / aspect_normal));
 
 
-	float aspect2 = tanf(frustum->horizontalFov/2.0f) / tanf(frustum->verticalFov/2.0f);
-	float aspectRatio2 = frustum->AspectRatio();
+	//float aspect2 = tanf(frustum->horizontalFov / 2.0f) / tanf(frustum->verticalFov / 2.0f);
+	//float aspectRatio2 = frustum->AspectRatio();
+	//float aspect_normal2 = (float)w / (float)h;
 }
 
 void ModuleCamera::SetPlaneDistances(float nearPlane, float farPlane) {
@@ -100,10 +119,10 @@ void ModuleCamera::SetPosition(float x, float y, float z) {
 
 /*void ModuleCamera::ManageInput(SDL_Event* sdlEvent) {
 	float speed = 0.1f;
-	
+
 	switch (sdlEvent->key.keysym.sym) {
 	case SDLK_w:
-		frustum->pos += frustum->front * speed; 
+		frustum->pos += frustum->front * speed;
 		break;
 	case SDLK_s:
 		frustum->pos -= frustum->front * speed;
@@ -118,33 +137,95 @@ void ModuleCamera::SetPosition(float x, float y, float z) {
 
 }*/
 
-void ModuleCamera::ManageInput() {
-	
-
-	if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KEY_REPEAT  ) {
-		frustum->pos += frustum->front * camera_speed;
+void ModuleCamera::ManageKeyboardInput() {
+	if (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		cameraSpeed *= 2.0f;
+	}
+	if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		frustum->pos += frustum->front * cameraSpeed;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		frustum->pos -= frustum->front * camera_speed;
+		frustum->pos -= frustum->front * cameraSpeed;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		frustum->pos -= frustum->WorldRight() * camera_speed;
+		frustum->pos -= frustum->WorldRight() * cameraSpeed;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		frustum->pos += frustum->WorldRight() * camera_speed;
+		frustum->pos += frustum->WorldRight() * cameraSpeed;
 	}
+	if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		frustum->pos += float3(0.0f, 1.0f, 0.0f) * cameraSpeed;
+	}
+	if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+		frustum->pos += float3(0.0f, -1.0f, 0.0f) * cameraSpeed;
+	}
+
+}
+
+
+void ModuleCamera::ManageMouseInput() {
+
+
+
+	float2 mousePosition = App->GetInput()->GetMousePosition();
+	float2 offset(lastMousePosition - mousePosition);
+	lastMousePosition = mousePosition;
+
+	offset.x *= mouseSensitivity.x;
+	offset.y *= mouseSensitivity.y;
+
+	yaw -= offset.x;
+	pitch += offset.y;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+
+	float3 newfront;
+	newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));
+	newfront.y = sinf(DegToRad(pitch));
+	newfront.z = sinf(DegToRad(yaw)) * cosf(DegToRad(pitch));
+	newfront.Normalize();
+
+	frustum->front = newfront;
+	float3 right = frustum->front.Cross(float3::unitY).Normalized();
+	frustum->up = right.Cross(frustum->front).Normalized();
+
+	/*float3x3 rotationDeltaMatrix(
+		float3(cosf(yaw)*cosf(pitch), -sinf(yaw), cosf(yaw)*sinf(pitch)),
+		float3(sinf(yaw)*cosf(pitch), cos(yaw), sinf(yaw)*sinf(pitch)),
+		float3(-sinf(pitch), 0.0f, cosf(pitch))
+	);
+
+
+	float3 oldFront = frustum->front.Normalized();
+	float3 oldUp = frustum->up.Normalized();
+
+	frustum->front = rotationDeltaMatrix.MulDir(oldFront);
+	frustum->up = rotationDeltaMatrix.MulDir(oldUp);*/
+
+
+
 
 }
 
 update_status ModuleCamera::PreUpdate()
 {
+	float currentFrame = SDL_GetTicks();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	cameraSpeed = 0.1f * deltaTime / 10;
 	return UPDATE_CONTINUE;
 }
 
 // Called every draw update
 update_status ModuleCamera::Update()
 {
-	ManageInput();
+	ManageKeyboardInput();
+	//if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	ManageMouseInput();
 	return UPDATE_CONTINUE;
 }
 

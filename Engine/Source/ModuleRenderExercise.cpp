@@ -10,9 +10,6 @@
 #include "ModuleTexture.h"
 
 
-
-
-
 ModuleRenderExercise::ModuleRenderExercise() {
 
 }
@@ -56,8 +53,6 @@ float4x4 ModuleRenderExercise::LookAt(float3 camera_pos, float3 target_pos, floa
 	float3 up = Cross(right, forward).Normalized();
 
 	return float4x4(right[0], up[0], -forward[0], camera_pos[0], right[1], up[1], -forward[1], camera_pos[1], right[2], up[2], -forward[2], camera_pos[2], 0, 0, 0, 1);
-
-
 }
 
 unsigned ModuleRenderExercise::CreateTriangleVBO()
@@ -113,10 +108,8 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	
 	unsigned texture_id = tex.LoadTextureGPU(tex.LoadTextureFile(L"./Textures/Baboon.ppm"));
 
-	int w;
-	int h;
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-
+	
+	float2 screenSize = App->GetWindow()->GetScreenSize();
 
 	float4x4 model_matrix, camera_matrix, view_matrix, proj_matrix;
 
@@ -135,7 +128,7 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	//view_matrix = camera_matrix.Inverted();
 
 	//camera->LookAt(2.0f,0.0f,2.0f);
-	//camera->SetFOV(90.0f);
+	camera->SetFOV(60.0f); 
 	view_matrix = camera->GetViewMatrix();
 
 	//view = frustum.ViewMatrix();
@@ -144,7 +137,7 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	
 	dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 	dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
-	App->GetDebugDraw()->Draw(view_matrix, proj_matrix,w, h);
+	App->GetDebugDraw()->Draw(view_matrix, proj_matrix,screenSize.x, screenSize.y);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glEnableVertexAttribArray(0);

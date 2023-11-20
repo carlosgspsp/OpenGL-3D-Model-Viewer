@@ -36,6 +36,8 @@ bool ModuleInput::Init()
 	}
 
 	return ret;
+
+
 }
 
 update_status ModuleInput::PreUpdate()
@@ -103,6 +105,8 @@ update_status ModuleInput::PreUpdate()
 		}
 	}
 
+	ImGui_ImplSDL2_ProcessEvent(&event);
+
 	//if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		//return UPDATE_STOP;
 
@@ -133,7 +137,8 @@ update_status ModuleInput::Update()
     }*/
     //sdlEvent.key.keysym;
     //keyboard = SDL_GetKeyboardState(NULL);
-
+	if (GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		return UPDATE_STOP;
  
   
     return UPDATE_CONTINUE;
@@ -147,7 +152,22 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
-KeyState ModuleInput::GetKey(int id)
+KeyState ModuleInput::GetKey(int id) const
 {
 	return keyboard[id];
+}
+
+KeyState ModuleInput::GetMouseButtonDown(int id) const
+{
+	return mouse_buttons[id - 1];
+}
+
+const float2& ModuleInput::GetMousePosition() const
+{
+	return mouse;
+}
+
+const float2& ModuleInput::GetMouseMotion() const
+{
+	return mouse_motion;
 }

@@ -52,8 +52,6 @@ ModuleOpenGL::ModuleOpenGL()
 	
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG); //Debug
 
-
-	
 }
 
 // Destructor
@@ -89,10 +87,8 @@ bool ModuleOpenGL::Init()
 	glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
 
-	int w;
-	int h;
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-	glViewport(0, 0, w, h);
+	float2 windowsSize = App->GetWindow()->GetScreenSize();
+	glViewport(0, 0, windowsSize.x, windowsSize.y);
 
 	return true;
 }
@@ -135,6 +131,8 @@ bool ModuleOpenGL::CleanUp()
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	
+	App->GetWindow()->SetScreenSize(float2(width, height));
+
 	glViewport(0, 0, width, height);
 	App->GetCamera()->SetAspectRatio((float)width/(float)height);
 }

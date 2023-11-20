@@ -27,7 +27,10 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	bool CleanUp();
-	KeyState GetKey(int id);
+	KeyState GetKey(int id) const;
+	KeyState GetMouseButtonDown(int id) const;
+	const float2& GetMouseMotion() const;
+	const float2& GetMousePosition() const;
 
 private:
 	//const Uint8 *keyboard = NULL;

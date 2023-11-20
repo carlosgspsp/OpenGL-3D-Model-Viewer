@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL.h"
+#include <MathGeoLib.h>
 
 class Application;
 
@@ -21,13 +22,23 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-public:
+	update_status Update();
+
+
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
+
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
 
+
+	float2 GetScreenSize();
+	void SetScreenSize(float2 screenSize);
+
+
+private:
+	float2 screenSize;
 
 };
 

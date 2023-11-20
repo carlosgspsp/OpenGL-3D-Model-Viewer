@@ -22,13 +22,18 @@ public:
 	void SetPosition(float x, float y, float z);
 	void SetOrientation();
 	void LookAt(float3 target_pos);
-	void ManageInput();
+	void ManageKeyboardInput();
+	void ManageMouseInput();
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 
 
 private:
-	float camera_speed = 0.1f;
+	float cameraSpeed;
+	float deltaTime, lastFrame;
+	float yaw, pitch;
+	float2 mouseSensitivity;
+	float2 lastMousePosition;
 	Frustum* frustum;
 	float4x4* camera_matrix;
 };

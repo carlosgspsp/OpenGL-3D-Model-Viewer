@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -25,15 +26,18 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
-		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+
+		screenSize.x = SCREEN_WIDTH;
+		screenSize.y = SCREEN_HEIGHT;
+		//int width = SCREEN_WIDTH;
+		//int height = SCREEN_HEIGHT;
+		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE ; //SDL_WINDOW_INPUT_GRABBED este para que no se salga el raton
 
 		if(FULLSCREEN == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenSize.x, screenSize.y, flags);
 
 		if(window == NULL)
 		{
@@ -47,9 +51,30 @@ bool ModuleWindow::Init()
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
-
+	//SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_WarpMouseInWindow(window, 50, 50);
 	return ret;
 }
+
+update_status ModuleWindow::Update() {
+	float2 mousePosition = App->GetInput()->GetMousePosition();
+
+	/*if (mousePosition.x == 0.0f) {
+		SDL_WarpMouseInWindow(window, screenSize.x, mousePosition.y);
+	}
+	if (mousePosition.x == screenSize.x-1) {
+		SDL_WarpMouseInWindow(window, 1, mousePosition.y);
+	}
+
+	if (mousePosition.y == 0.0f) {
+		SDL_WarpMouseInWindow(window, mousePosition.x, screenSize.y);
+	}
+	if (mousePosition.y == screenSize.y-1) {
+		SDL_WarpMouseInWindow(window, mousePosition.x, 0);
+	}*/
+
+	return UPDATE_CONTINUE;
+	}
 
 // Called before quitting
 bool ModuleWindow::CleanUp()
@@ -67,3 +92,12 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+
+float2 ModuleWindow::GetScreenSize() {
+	return screenSize;
+}
+
+void ModuleWindow::SetScreenSize(float2 screenSize) {
+	this->screenSize.x = screenSize.x;
+	this->screenSize.y = screenSize.y;
+}

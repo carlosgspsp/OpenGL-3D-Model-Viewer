@@ -24,6 +24,9 @@ public:
 	void LookAt(float3 target_pos);
 	void ManageKeyboardInput();
 	void ManageMouseInput();
+	void CameraRotation();
+	void CameraPan();
+	void CameraZoom();
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 
@@ -32,8 +35,9 @@ private:
 	float cameraSpeed;
 	float deltaTime, lastFrame;
 	float yaw, pitch;
-	float2 mouseSensitivity;
-	float2 lastMousePosition;
+	float verticalPan, horizontalPan;
+	float2 mouseSensitivity, panSensitivity;
+	float zoomSensitivity;
 	Frustum* frustum;
 	float4x4* camera_matrix;
 };

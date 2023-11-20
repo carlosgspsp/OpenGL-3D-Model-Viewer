@@ -57,21 +57,7 @@ bool ModuleWindow::Init()
 }
 
 update_status ModuleWindow::Update() {
-	float2 mousePosition = App->GetInput()->GetMousePosition();
-
-	/*if (mousePosition.x == 0.0f) {
-		SDL_WarpMouseInWindow(window, screenSize.x, mousePosition.y);
-	}
-	if (mousePosition.x == screenSize.x-1) {
-		SDL_WarpMouseInWindow(window, 1, mousePosition.y);
-	}
-
-	if (mousePosition.y == 0.0f) {
-		SDL_WarpMouseInWindow(window, mousePosition.x, screenSize.y);
-	}
-	if (mousePosition.y == screenSize.y-1) {
-		SDL_WarpMouseInWindow(window, mousePosition.x, 0);
-	}*/
+	
 
 	return UPDATE_CONTINUE;
 	}

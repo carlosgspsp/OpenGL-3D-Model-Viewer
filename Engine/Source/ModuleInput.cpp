@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleOpenGL.h"
 #include "ModuleCamera.h"
+#include "ModuleWindow.h"
 #include "SDL.h"
 #include <backends/imgui_impl_sdl2.h>
 
@@ -45,6 +46,8 @@ update_status ModuleInput::PreUpdate()
 	static SDL_Event event;
 
 	mouse_motion = { 0, 0 };
+	mouse_wheel = { 0,0 };
+	
 	//memset(windowEvents, false, WE_COUNT * sizeof(bool));
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -99,8 +102,14 @@ update_status ModuleInput::PreUpdate()
 		case SDL_MOUSEMOTION:
 			mouse_motion.x = event.motion.xrel;
 			mouse_motion.y = event.motion.yrel;
+		
 			mouse.x = event.motion.x;
 			mouse.y = event.motion.y;
+			break;
+		case SDL_MOUSEWHEEL:
+			mouse_wheel.x = event.wheel.x;
+			mouse_wheel.y = event.wheel.y;
+
 			break;
 		}
 	}
@@ -110,39 +119,53 @@ update_status ModuleInput::PreUpdate()
 	//if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		//return UPDATE_STOP;
 
+
+
+
 	return UPDATE_CONTINUE;
 }
 
 // Called every draw update
 update_status ModuleInput::Update()
 {
-   /*SDL_Event sdlEvent;
+	SDL_Window *window = App->GetWindow()->window;
+	float2 screenSize = App->GetWindow()->GetScreenSize();
+	if (GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT || GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+		if (mouse.x <= 0.0f) {
+			SDL_WarpMouseInWindow(window, screenSize.x - 5.0f, mouse.y);
+			last_mouse_position.x = screenSize.x - 5.0f;
+		}
+		if (mouse.x >= screenSize.x - 1) {
+			SDL_WarpMouseInWindow(window, 5.0f, mouse.y);
+			last_mouse_position.x = 5.0f;
+		}
 
-    while (SDL_PollEvent(&sdlEvent) != 0)
-    {
-        switch (sdlEvent.type)
-        {
-            case SDL_QUIT:
-                return UPDATE_STOP;
-            case SDL_WINDOWEVENT:
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-                    App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
-                break;
-            case SDL_KEYDOWN:
-                App->GetCamera()->ManageInput( &sdlEvent);
-                break;
-                
-        }
-        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-    }*/
-    //sdlEvent.key.keysym;
-    //keyboard = SDL_GetKeyboardState(NULL);
+		if (mouse.y <= 0.0f) {
+			SDL_WarpMouseInWindow(window, mouse.x, screenSize.y - 5.0f);
+			last_mouse_position.y = screenSize.y - 5.0f;
+		}
+		if (mouse.y >= screenSize.y - 1) {
+			SDL_WarpMouseInWindow(window, mouse.x, 5.0f);
+			last_mouse_position.y = 5.0f;
+		}
+
+	}
 	if (GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		return UPDATE_STOP;
  
   
     return UPDATE_CONTINUE;
 }
+
+
+update_status ModuleInput::PostUpdate()
+{
+	last_mouse_position.x = mouse.x;
+	last_mouse_position.y = mouse.y;
+
+	return UPDATE_CONTINUE;
+}
+
 
 // Called before quitting
 bool ModuleInput::CleanUp()
@@ -167,7 +190,17 @@ const float2& ModuleInput::GetMousePosition() const
 	return mouse;
 }
 
+const float2& ModuleInput::GetLastMousePosition() const
+{
+	return last_mouse_position;
+}
+
 const float2& ModuleInput::GetMouseMotion() const
 {
 	return mouse_motion;
+}
+
+const float2& ModuleInput::GetMouseWheel() const
+{
+	return mouse_wheel;
 }

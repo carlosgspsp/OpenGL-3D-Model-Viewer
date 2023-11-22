@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "ModuleProgram.h"
 #include "MathGeoLib.h"
+#include "Mesh.h"
 class ModuleRenderExercise :
     public Module
 {
@@ -19,16 +20,19 @@ public:
 
 private:
 	ModuleProgram program;
-	unsigned vbo;
+	//unsigned vbo;
 	unsigned program_id;
 	unsigned texture_id;
 
 	unsigned CreateTriangleVBO();
-	void RenderVBO(unsigned vbo);
+	void RenderVBO();
 	void DestroyVBO(unsigned vbo);
 	float4x4 LookAt(float3 camera_pos, float3 target_pos, float3 up_vector);
 	
 	ModuleCamera* camera;
+
+
+	Mesh mesh;
 
 };
 

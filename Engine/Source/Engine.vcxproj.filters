@@ -130,6 +130,7 @@
     <ClCompile Include="Dependencies\imgui-1.89.9-docking\backends\imgui_impl_sdl2.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -354,6 +355,8 @@
     <ClInclude Include="Dependencies\imgui-1.89.9-docking\backends\imgui_impl_sdl2.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="tiny_gltf.h" />
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />

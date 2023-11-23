@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include <.\GL\glew.h>
 
+
 ModuleTexture::ModuleTexture()
 {
 
@@ -12,10 +13,12 @@ ModuleTexture::~ModuleTexture()
 {
 }
 
+
+
+
 DirectX::ScratchImage ModuleTexture::LoadTextureFile(const wchar_t* texture_file_name) {
 
 	DirectX::ScratchImage img;
-
 	HRESULT hr = DirectX::LoadFromDDSFile(texture_file_name, DirectX::DDS_FLAGS_NONE, nullptr, img);
 	if (FAILED(hr)) {
 		//LOG("\nLOAD FROM DDS FILE FAILED\n");
@@ -98,4 +101,9 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage img) {
 	return texture_id;
 }
 
+unsigned int ModuleTexture::Load(std::string uri) {
 
+	std::wstring widestr = L"./Models/BoxTextured/" + std::wstring(uri.begin(), uri.end());
+	unsigned int textureId = LoadTextureGPU(LoadTextureFile(widestr.c_str()));
+	return textureId;
+}

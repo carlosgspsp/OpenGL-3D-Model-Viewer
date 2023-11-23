@@ -131,6 +131,7 @@
       <Filter>IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -355,8 +356,20 @@
     <ClInclude Include="Dependencies\imgui-1.89.9-docking\backends\imgui_impl_sdl2.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="tiny_gltf.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Dependencies\tinygltf-2.8.18\json.hpp">
+      <Filter>TINY_GLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\tinygltf-2.8.18\stb_image.h">
+      <Filter>TINY_GLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\tinygltf-2.8.18\stb_image_write.h">
+      <Filter>TINY_GLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\tinygltf-2.8.18\tiny_gltf.h">
+      <Filter>TINY_GLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />
@@ -386,6 +399,9 @@
     </Filter>
     <Filter Include="IMGUI">
       <UniqueIdentifier>{ac888a7c-b23a-48da-a575-9be99e11f52b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TINY_GLTF">
+      <UniqueIdentifier>{77b784e9-36d8-4c90-a7ea-38ed71ec1484}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

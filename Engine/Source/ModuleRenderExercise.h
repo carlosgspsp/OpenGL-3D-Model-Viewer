@@ -4,6 +4,8 @@
 #include "ModuleProgram.h"
 #include "MathGeoLib.h"
 #include "Mesh.h"
+#include "Model.h"
+
 class ModuleRenderExercise :
     public Module
 {
@@ -33,6 +35,6 @@ private:
 
 
 	Mesh mesh;
-
+	Model model;
 };
 

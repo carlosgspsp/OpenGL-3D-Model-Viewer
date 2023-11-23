@@ -8,7 +8,6 @@
 #include "ModuleCamera.h"
 #include "DebugDraw.h"
 #include "ModuleTexture.h"
-#include "Mesh.h"
 
 
 ModuleRenderExercise::ModuleRenderExercise() {
@@ -17,25 +16,28 @@ ModuleRenderExercise::ModuleRenderExercise() {
 
 bool ModuleRenderExercise::Init() {
 	//vbo = CreateTriangleVBO();
-	mesh.CreateProgram();
-	mesh.LoadVBO();
-	mesh.LoadEBO();
-	mesh.CreateVAO();
-	/*const char* vertex_shader_file = "../Source/VertexShader.glsl";
+
+	ModuleProgram program;
+	const char* vertex_shader_file = "../Source/VertexShader.glsl";
 	const char* fragment_shader_file = "../Source/FragmentShader.glsl";
 	char* vertex_shader_source = program.LoadShaderSource(vertex_shader_file);
 	char* fragment_shader_source = program.LoadShaderSource(fragment_shader_file);
-	std::cout << "hola;";
-	LOG("VERTEX");
+	//std::cout << "hola;";
+	//LOG("VERTEX");
 	LOG(vertex_shader_source);
-	LOG("FRAGMENT");
+	//LOG("FRAGMENT");
 	LOG(fragment_shader_source);
 	unsigned vertex_shader_id = program.CompileShader(GL_VERTEX_SHADER, vertex_shader_source);
 	unsigned fragment_shader_id = program.CompileShader(GL_FRAGMENT_SHADER, fragment_shader_source);
-	
 	program_id = program.CreateProgram(vertex_shader_id, fragment_shader_id);
-	*/
 
+	
+	//model.Load("./Models/TriangleWithoutIndices/TriangleWithoutIndices.gltf");
+	//model.Load("./Models/Triangle/Triangle.gltf");
+	//model.Load("./Models/BoxInterleaved/BoxInterleaved.gltf");
+	//model.Load("./Models/Box/Box.gltf");
+	model.Load("./Models/BoxTextured/BoxTextured.gltf");
+	//model.Load("./Models/BakerHouse/BakerHouse.gltf");
 	camera = App->GetCamera();
 
 	return true;
@@ -45,7 +47,7 @@ update_status ModuleRenderExercise::Update() {
 
 	RenderVBO();
 	
-		
+	model.DrawModel(program_id);
 	
 
 	return UPDATE_CONTINUE;
@@ -127,8 +129,8 @@ void ModuleRenderExercise::RenderVBO()
 	dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
 	App->GetDebugDraw()->Draw(view_matrix, proj_matrix,screenSize.x, screenSize.y);
 
-	mesh.Draw();
-
+	//mesh.Draw();
+	glUseProgram(program_id);
 	glUniformMatrix4fv(0, 1, GL_TRUE, &model_matrix[0][0]);
 	glUniformMatrix4fv(1, 1, GL_TRUE, &view_matrix[0][0]);
 	glUniformMatrix4fv(2, 1, GL_TRUE, &proj_matrix[0][0]);

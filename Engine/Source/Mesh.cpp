@@ -10,6 +10,7 @@
 
 
 void Mesh::Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
+	textureID = primitive.material;
 	LoadVBO(srcModel, srcMesh, primitive);
 	LoadEBO(srcModel, srcMesh, primitive);
 	CreateVAO();
@@ -44,12 +45,12 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		const tinygltf::Buffer& posBuffer = srcModel.buffers[posView.buffer];
 		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
 
-		posByteOffset = posAcc.byteOffset + posView.byteOffset;
+		posByteOffset = posView.byteOffset;
 		posByteStride = posView.byteStride;
 
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, nullptr, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count*2, nullptr, GL_STATIC_DRAW);
 		float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		for (size_t i = 0; i < posAcc.count; i++) {
@@ -82,9 +83,10 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		//glGenBuffers(1, &VBO);
 		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * texCoordAcc.count, nullptr, GL_STATIC_DRAW);
-		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+sizeof(float)*3*vertexCount;
-		float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+ texCoordAcc.byteOffset + texCoordView.byteOffset;
-		
+		//float2* ptr = reinterpret_cast<float2*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+sizeof(float)*3*vertexCount);
+		float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+(sizeof(float)*3*vertexCount)/sizeof(float2);
+		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+ texCoordAcc.byteOffset + texCoordView.byteOffset;
+		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		for (size_t i = 0; i < texCoordAcc.count; i++) {
 			ptr[i] = *reinterpret_cast<const float2*>(bufferTexCoord);
@@ -156,20 +158,20 @@ void Mesh::CreateVAO() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-	/*
+	
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
-	*/
-
+	
+	/*
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, posByteStride, (void*)posByteOffset);
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, texByteStride, (void*)(texByteOffset));
-
+	*/
 
 	glBindVertexArray(0);
 }
@@ -183,7 +185,7 @@ void Mesh::Draw(const std::vector<unsigned>& textures, unsigned program_id) {
 
 	if (textures.size() > 0) {
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textures[0]);
+		glBindTexture(GL_TEXTURE_2D, textures[textureID]);
 		glUniform1i(glGetUniformLocation(program_id, "mytexture"), 0);
 	}
 

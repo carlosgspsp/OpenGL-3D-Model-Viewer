@@ -36,8 +36,8 @@ bool ModuleRenderExercise::Init() {
 	//model.Load("./Models/Triangle/Triangle.gltf");
 	//model.Load("./Models/BoxInterleaved/BoxInterleaved.gltf");
 	//model.Load("./Models/Box/Box.gltf");
-	model.Load("./Models/BoxTextured/BoxTextured.gltf");
-	//model.Load("./Models/BakerHouse/BakerHouse.gltf");
+	//model.Load("./Models/BoxTextured/BoxTextured.gltf");
+	model.Load("./Models/BakerHouse/BakerHouse.gltf");
 	camera = App->GetCamera();
 
 	return true;

@@ -103,7 +103,7 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage img) {
 
 unsigned int ModuleTexture::Load(std::string uri) {
 
-	std::wstring widestr = L"./Models/BoxTextured/" + std::wstring(uri.begin(), uri.end());
+	std::wstring widestr = L"./Models/BakerHouse/" + std::wstring(uri.begin(), uri.end());
 	unsigned int textureId = LoadTextureGPU(LoadTextureFile(widestr.c_str()));
 	return textureId;
 }

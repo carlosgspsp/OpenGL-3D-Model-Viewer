@@ -26,6 +26,11 @@ void Model::Load(const char* assetFileName) {
 		LOG("Error loading s%: s%", assetFileName, error.c_str());
 	}
 	else {
+		filePath = assetFileName;
+		size_t pos = filePath.rfind('/');
+		if (pos != std::string::npos) {
+			filePath.erase(pos + 1, filePath.size() - 1);
+		}
 		for (const auto& srcMesh : srcModel.meshes) {
 			for (const auto& primitive : srcMesh.primitives) {
 				Mesh* mesh = new Mesh;
@@ -37,14 +42,13 @@ void Model::Load(const char* assetFileName) {
 	}
 }
 
-void Model::LoadMaterials(const tinygltf::Model srcModel) {
+void Model::LoadMaterials(const tinygltf::Model& srcModel) {
 	for (const auto& srcMaterial : srcModel.materials) {
 		unsigned int textureId = 0;
 		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0) {
 			const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
 			const tinygltf::Image& image = srcModel.images[texture.source];
-
-			textureId = App->GetTextureModule()->Load(image.uri);
+			textureId = App->GetTextureModule()->Load(filePath+image.uri);
 		}
 		textures.push_back(textureId);
 	}

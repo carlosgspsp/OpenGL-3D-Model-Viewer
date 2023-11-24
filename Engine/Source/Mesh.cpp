@@ -35,6 +35,20 @@ void Mesh::CreateProgram() {
 }
 void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
 	const auto& itPos = primitive.attributes.find("POSITION");
+	const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
+	const auto& itNormal = primitive.attributes.find("NORMAL");
+
+	size_t bufferSize = 0;
+
+	if (itPos != primitive.attributes.end()) {
+		bufferSize += sizeof(float) * 3;
+	}
+	if (itTexCoord != primitive.attributes.end()) {
+		bufferSize += sizeof(float) * 2;
+	}
+	if (itNormal != primitive.attributes.end()) {
+		bufferSize += sizeof(float) * 3;
+	}
 
 	if (itPos != primitive.attributes.end()) {
 		const tinygltf::Accessor& posAcc = srcModel.accessors[itPos->second];
@@ -50,7 +64,8 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count*2, nullptr, GL_STATIC_DRAW);
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count*2, nullptr, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER,  bufferSize *= posAcc.count , nullptr, GL_STATIC_DRAW);
 		float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		for (size_t i = 0; i < posAcc.count; i++) {
@@ -67,7 +82,7 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 	}
 
-	const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
+	//const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
 
 	if (itTexCoord != primitive.attributes.end()) {
 		const tinygltf::Accessor& texCoordAcc = srcModel.accessors[itTexCoord->second];
@@ -80,13 +95,9 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		texByteOffset = texCoordAcc.byteOffset + texCoordView.byteOffset;
 		texByteStride = texCoordView.byteStride;
 
-		//glGenBuffers(1, &VBO);
-		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * texCoordAcc.count, nullptr, GL_STATIC_DRAW);
 		//float2* ptr = reinterpret_cast<float2*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+sizeof(float)*3*vertexCount);
 		float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+(sizeof(float)*3*vertexCount)/sizeof(float2);
-		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+ texCoordAcc.byteOffset + texCoordView.byteOffset;
-		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		
 
 		for (size_t i = 0; i < texCoordAcc.count; i++) {
 			ptr[i] = *reinterpret_cast<const float2*>(bufferTexCoord);

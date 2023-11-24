@@ -10,11 +10,12 @@ class Model
 {
 public:
 	void Load(const char* assetFileName);
-	void LoadMaterials(const tinygltf::Model srcModel);
+	void LoadMaterials(const tinygltf::Model& srcModel);
 	void DrawModel(unsigned program_id);
 
 private:
 	std::vector<unsigned> textures;
 	std::vector<Mesh> meshes;
+	std::string filePath;
 };
 

@@ -133,19 +133,23 @@ update_status ModuleInput::Update()
 	if (GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT || GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 		if (mouse.x <= 0.0f) {
 			SDL_WarpMouseInWindow(window, screenSize.x - 5.0f, mouse.y);
+			mouse.x = screenSize.x - 5.0f;
 			last_mouse_position.x = screenSize.x - 5.0f;
 		}
 		if (mouse.x >= screenSize.x - 1) {
 			SDL_WarpMouseInWindow(window, 5.0f, mouse.y);
 			last_mouse_position.x = 5.0f;
+			mouse.x = 5.0f;
 		}
 
 		if (mouse.y <= 0.0f) {
 			SDL_WarpMouseInWindow(window, mouse.x, screenSize.y - 5.0f);
+			mouse.y = screenSize.y - 5.0f;
 			last_mouse_position.y = screenSize.y - 5.0f;
 		}
 		if (mouse.y >= screenSize.y - 1) {
 			SDL_WarpMouseInWindow(window, mouse.x, 5.0f);
+			mouse.y = 5.0f;
 			last_mouse_position.y = 5.0f;
 		}
 

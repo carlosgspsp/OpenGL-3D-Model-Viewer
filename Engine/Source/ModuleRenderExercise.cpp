@@ -22,11 +22,12 @@ bool ModuleRenderExercise::Init() {
 	const char* fragment_shader_file = "../Source/FragmentShader.glsl";
 	char* vertex_shader_source = program.LoadShaderSource(vertex_shader_file);
 	char* fragment_shader_source = program.LoadShaderSource(fragment_shader_file);
-	//std::cout << "hola;";
-	//LOG("VERTEX");
+
+	LOG("VERTEX");
 	LOG(vertex_shader_source);
-	//LOG("FRAGMENT");
+	LOG("FRAGMENT");
 	LOG(fragment_shader_source);
+
 	unsigned vertex_shader_id = program.CompileShader(GL_VERTEX_SHADER, vertex_shader_source);
 	unsigned fragment_shader_id = program.CompileShader(GL_FRAGMENT_SHADER, fragment_shader_source);
 	program_id = program.CreateProgram(vertex_shader_id, fragment_shader_id);
@@ -39,6 +40,7 @@ bool ModuleRenderExercise::Init() {
 	//model.Load("./Models/BoxTextured/BoxTextured.gltf");
 	model.Load("./Models/BakerHouse/BakerHouse.gltf");
 	//model.Load("./Models/Duck/Duck.gltf");
+	
 	camera = App->GetCamera();
 
 	return true;
@@ -46,14 +48,14 @@ bool ModuleRenderExercise::Init() {
 
 update_status ModuleRenderExercise::Update() {
 
-	RenderVBO();
+	RenderWorld();
 	
 	model.DrawModel(program_id);
 	
-
 	return UPDATE_CONTINUE;
 }
 
+/*
 float4x4 ModuleRenderExercise::LookAt(float3 camera_pos, float3 target_pos, float3 up_vector) {
 	float3 forward = (target_pos - camera_pos).Normalized();
 	float3 right = Cross(forward, up_vector).Normalized();
@@ -61,6 +63,7 @@ float4x4 ModuleRenderExercise::LookAt(float3 camera_pos, float3 target_pos, floa
 
 	return float4x4(right[0], up[0], -forward[0], camera_pos[0], right[1], up[1], -forward[1], camera_pos[1], right[2], up[2], -forward[2], camera_pos[2], 0, 0, 0, 1);
 }
+*/
 
 unsigned ModuleRenderExercise::CreateTriangleVBO()
 {
@@ -73,14 +76,6 @@ unsigned ModuleRenderExercise::CreateTriangleVBO()
 		1.0f, -1.0f, 0.0f, 
 		1.0f, 1.0f, 0.0f, 
 		-1.0f, 1.0f, 0.0f,
-
-		//0.0f, 0.0f,
-		//1.0f,0.0f,
-		//0.0f,1.0f,
-		
-		//1.0f, 0.0f,
-		//1.0f,1.0f,
-		//0.0f,1.0f,
 
 		1.0f,1.0f,
 		0.0f,1.0f,
@@ -108,16 +103,11 @@ void ModuleRenderExercise::DestroyVBO(unsigned vbo)
 }
 
 // This function must be called each frame for drawing the triangle
-void ModuleRenderExercise::RenderVBO()
+void ModuleRenderExercise::RenderWorld()
 {
-
-	//ModuleTexture tex;
-	
-	//unsigned texture_id = tex.LoadTextureGPU(tex.LoadTextureFile(L"./Textures/Baboon.ppm"));
-
 	
 	float2 screenSize = App->GetWindow()->GetScreenSize();
-	float4x4 model_matrix, camera_matrix, view_matrix, proj_matrix;
+	float4x4 model_matrix, view_matrix, proj_matrix;
 	float3 translation(0.0f, 0.0f, 0.0f);
 	model_matrix = float4x4::FromTRS(translation, float4x4::RotateZ(0), float3(1.0f, 1.0f, 1.0f));
 	
@@ -130,14 +120,10 @@ void ModuleRenderExercise::RenderVBO()
 	dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
 	App->GetDebugDraw()->Draw(view_matrix, proj_matrix,screenSize.x, screenSize.y);
 
-	//mesh.Draw();
 	glUseProgram(program_id);
 	glUniformMatrix4fv(0, 1, GL_TRUE, &model_matrix[0][0]);
 	glUniformMatrix4fv(1, 1, GL_TRUE, &view_matrix[0][0]);
 	glUniformMatrix4fv(2, 1, GL_TRUE, &proj_matrix[0][0]);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, &vbo);
-	//glDrawArrays(GL_TRIANGLES, 0, 6);
-	
 	
 }
 

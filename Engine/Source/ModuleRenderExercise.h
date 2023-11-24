@@ -27,7 +27,7 @@ private:
 	unsigned texture_id;
 
 	unsigned CreateTriangleVBO();
-	void RenderVBO();
+	void RenderWorld();
 	void DestroyVBO(unsigned vbo);
 	float4x4 LookAt(float3 camera_pos, float3 target_pos, float3 up_vector);
 	

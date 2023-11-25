@@ -31,7 +31,7 @@ bool ModuleWindow::Init()
 		screenSize.y = SCREEN_HEIGHT;
 		//int width = SCREEN_WIDTH;
 		//int height = SCREEN_HEIGHT;
-		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE ; //SDL_WINDOW_INPUT_GRABBED este para que no se salga el raton
+		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE ; // ||SDL_WINDOW_INPUT_GRABBED este para que no se salga el raton
 
 		if(FULLSCREEN == true)
 		{

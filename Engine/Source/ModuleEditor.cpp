@@ -26,7 +26,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-	//io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	   // Enable ImGui outside Viewports
 	
 
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
@@ -149,6 +149,11 @@ update_status ModuleEditor::Update() {
 			}
 			if (ImGui::TreeNode("Texture"))
 			{
+				ImGui::Text("File: %s", App->GetSDLVersion());
+				ImGui::Text("Width: %s", App->GetSDLVersion());
+				ImGui::SameLine();
+				ImGui::Text("Height: %s", App->GetSDLVersion());
+				ImGui::Text("Format: %s", App->GetSDLVersion());
 				ImGui::TreePop();
 			}
 		}

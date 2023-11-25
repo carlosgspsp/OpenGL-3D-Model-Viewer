@@ -27,6 +27,7 @@ public:
 	void CameraRotation();
 	void CameraPan();
 	void CameraZoom();
+	void CameraOrbit();
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 

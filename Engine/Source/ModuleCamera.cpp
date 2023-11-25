@@ -148,7 +148,10 @@ void ModuleCamera::ManageKeyboardInput() {
 }
 
 void ModuleCamera::ManageMouseInput() {
-	if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
+	if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+	CameraOrbit();
+	}
+	else if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
 		CameraRotation();
 	}
 	else if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
@@ -157,6 +160,7 @@ void ModuleCamera::ManageMouseInput() {
 	else if (App->GetInput()->GetMouseWheel().y != 0) {
 		CameraZoom();
 	}
+	
 }
 void ModuleCamera::CameraRotation() {
 
@@ -224,6 +228,45 @@ void ModuleCamera::CameraPan() {
 void ModuleCamera::CameraZoom() {
 	float2 mouseWheel = App->GetInput()->GetMouseWheel();
 	frustum->pos += frustum->front * zoomSensitivity * mouseWheel.y;
+}
+
+
+
+void ModuleCamera::CameraOrbit() {
+
+	float radius = frustum->pos.Distance(float3::zero);
+	float2 mousePosition = App->GetInput()->GetMousePosition();
+	float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
+	float2 offset(lastMousePosition - mousePosition);
+
+	offset.x *= mouseSensitivity.x;
+	offset.y *= mouseSensitivity.y;
+
+	yaw -= offset.x;
+	pitch += offset.y;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+
+	frustum->pos = float3::zero;
+
+	float3 newfront;
+	newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));
+	newfront.y = sinf(DegToRad(pitch));
+	newfront.z = sinf(DegToRad(yaw)) * cosf(DegToRad(pitch));
+	newfront.Normalize();
+
+	frustum->front = newfront;
+	float3 right = frustum->front.Cross(float3::unitY).Normalized();
+	frustum->up = right.Cross(frustum->front).Normalized();
+	 
+
+	frustum->Translate(-frustum->front * radius);
+
+
 }
 update_status ModuleCamera::PreUpdate()
 {

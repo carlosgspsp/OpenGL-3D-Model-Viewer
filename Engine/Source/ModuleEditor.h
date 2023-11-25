@@ -16,6 +16,10 @@ class ModuleEditor : public Module
 		//update_status PostUpdate();
 		bool CleanUp();
 
+		bool fullScreen, resizable;
+		int width, height;
+		const ImGuiIO* GetIO() { return io; };
+		ImGuiTextBuffer logs;
 
 	private:
 		ImGuiIO *io;

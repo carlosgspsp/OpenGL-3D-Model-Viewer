@@ -35,8 +35,8 @@ public:
 
 	float2 GetScreenSize();
 	void SetScreenSize(float2 screenSize);
-
-
+	void SetFullScreen(bool fullScreen);
+	void SetResizable(bool resizable);
 private:
 	float2 screenSize;
 

@@ -1,8 +1,11 @@
 #pragma once
 
 #include<list>
+#include<vector>
 #include "Globals.h"
 #include "Module.h"
+#include "SDL.h"
+#include <.\GL\glew.h>
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -29,8 +32,26 @@ public:
     ModuleWindow* GetWindow() { return window; }
     ModuleInput*  GetInput() { return input; }
     ModuleDebugDraw* GetDebugDraw() { return debug_draw; }
+    ModuleEditor* GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera; }
     ModuleTexture* GetTextureModule() { return textureModule; }
+    
+    void RequestBrowser(const char* url);
+    std::vector<float>* GetFrameRate() { return &frameRate; };
+    std::vector<float>* GetMilliseconds() { return &milliSeconds; };
+
+
+
+    //Hardware CPU Info
+    const char* GetSDLVersion() { return SDL_GetRevision(); }
+    const int GetCPUsCount() { return SDL_GetCPUCount(); }
+    const float GetChacheSize() { return SDL_GetCPUCacheLineSize(); }
+    const float GetSystemRAM() { return SDL_GetSystemRAM(); }
+    
+    //GPU Info
+    const GLubyte* GetGPU() { return glGetString(GL_RENDER); }
+
+  
 
 private:
 
@@ -42,6 +63,12 @@ private:
     ModuleDebugDraw* debug_draw = nullptr;
     ModuleCamera* camera = nullptr;
     ModuleTexture* textureModule = nullptr;
+
+
+   
+    std::vector<float> frameRate;
+    std::vector<float> milliSeconds;
+    int vectorPos;
 
     std::list<Module*> modules;
 

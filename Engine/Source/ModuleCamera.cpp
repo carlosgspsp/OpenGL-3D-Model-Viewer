@@ -20,7 +20,7 @@ bool ModuleCamera::Init()
 {
 	frustum = new Frustum();
 	camera_matrix = new float4x4();
-
+	
 
 	//int w;
 	//int h;
@@ -52,7 +52,8 @@ bool ModuleCamera::Init()
 	panSensitivity = float2(0.005f, 0.005f);
 	zoomSensitivity = 0.1f;
 	yaw = -90.0f;
-	pitch = 0.0f;
+	pitch = -RadToDeg(float3(0.0, 0.0, 1.0).AngleBetween(frustum->pos));
+	//pitch = 0;
 
 	verticalPan = 0.0f;
 	horizontalPan = 0.0f;

@@ -83,6 +83,23 @@ float2 ModuleWindow::GetScreenSize() {
 	return screenSize;
 }
 
+void ModuleWindow::SetFullScreen(bool fullScreen) {
+
+	if (fullScreen)
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	else
+	SDL_SetWindowFullscreen(window, 0);
+
+}
+
+
+void ModuleWindow::SetResizable(bool resizable) {
+	if (resizable)
+	SDL_SetWindowResizable(window, SDL_TRUE);
+	else
+	SDL_SetWindowResizable(window, SDL_FALSE);
+}
+
 void ModuleWindow::SetScreenSize(float2 screenSize) {
 	this->screenSize.x = screenSize.x;
 	this->screenSize.y = screenSize.y;

@@ -86,7 +86,7 @@ bool ModuleOpenGL::Init()
 	//DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr);
+	//glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
 
 	float2 windowsSize = App->GetWindow()->GetScreenSize();

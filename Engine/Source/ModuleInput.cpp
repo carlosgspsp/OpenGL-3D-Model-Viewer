@@ -4,6 +4,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
+#include "ModuleEditor.h"
 #include "SDL.h"
 #include <backends/imgui_impl_sdl2.h>
 
@@ -181,12 +182,18 @@ bool ModuleInput::CleanUp()
 
 KeyState ModuleInput::GetKey(int id) const
 {
-	return keyboard[id];
+	if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
+		return keyboard[id];
+	else
+		return KEY_IDLE;
 }
 
 KeyState ModuleInput::GetMouseButtonDown(int id) const
 {
-	return mouse_buttons[id - 1];
+	if (!App->GetEditor()->GetIO()->WantCaptureMouse)
+		return mouse_buttons[id - 1];
+	else
+		return KEY_IDLE;
 }
 
 const float2& ModuleInput::GetMousePosition() const
@@ -206,5 +213,8 @@ const float2& ModuleInput::GetMouseMotion() const
 
 const float2& ModuleInput::GetMouseWheel() const
 {
-	return mouse_wheel;
+	if (!App->GetEditor()->GetIO()->WantCaptureMouse)
+		return mouse_wheel;
+	else
+		return float2(0.0f, 0.0f);
 }

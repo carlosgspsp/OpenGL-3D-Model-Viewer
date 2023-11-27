@@ -53,8 +53,14 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 	if (itPos != primitive.attributes.end()) {
 		const tinygltf::Accessor& posAcc = srcModel.accessors[itPos->second];
 		vertexCount = posAcc.count;
+
 		SDL_assert(posAcc.type == TINYGLTF_TYPE_VEC3);
 		SDL_assert(posAcc.componentType == GL_FLOAT);
+
+		//App->GetCamera()->SetPosition(App->GetCamera()->GetPosition().x, App->GetCamera()->GetPosition().y, -posAcc.maxValues[2]);
+		App->GetCamera()->SetPosition(posAcc.maxValues[0], posAcc.maxValues[1], -posAcc.maxValues[2]-.05);
+		//App->GetCamera()->LookAt(float3(0.0f, 0.0f, 0.0f));
+
 		const tinygltf::BufferView& posView = srcModel.bufferViews[posAcc.bufferView];
 		const tinygltf::Buffer& posBuffer = srcModel.buffers[posView.buffer];
 		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);

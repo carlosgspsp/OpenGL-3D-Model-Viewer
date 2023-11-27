@@ -28,6 +28,7 @@ public:
 	void CameraPan();
 	void CameraZoom();
 	void CameraOrbit();
+	float3 GetPosition() { return frustum->pos; };
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 

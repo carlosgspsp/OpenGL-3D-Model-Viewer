@@ -12,6 +12,7 @@ public:
 	void Load(const char* assetFileName);
 	void LoadMaterials(const tinygltf::Model& srcModel);
 	void DrawModel(unsigned program_id);
+	void Clear();
 
 private:
 	std::vector<unsigned> textures;

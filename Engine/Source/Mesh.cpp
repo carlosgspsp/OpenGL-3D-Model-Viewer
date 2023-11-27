@@ -58,7 +58,7 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		SDL_assert(posAcc.componentType == GL_FLOAT);
 
 		//App->GetCamera()->SetPosition(App->GetCamera()->GetPosition().x, App->GetCamera()->GetPosition().y, -posAcc.maxValues[2]);
-		App->GetCamera()->SetPosition(posAcc.maxValues[0], posAcc.maxValues[1], -posAcc.maxValues[2]-.05);
+		//App->GetCamera()->SetPosition(posAcc.maxValues[0], posAcc.maxValues[1], -posAcc.maxValues[2]-.05);
 		//App->GetCamera()->LookAt(float3(0.0f, 0.0f, 0.0f));
 
 		const tinygltf::BufferView& posView = srcModel.bufferViews[posAcc.bufferView];

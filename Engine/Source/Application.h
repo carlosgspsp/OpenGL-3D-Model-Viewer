@@ -35,6 +35,7 @@ public:
     ModuleEditor* GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera; }
     ModuleTexture* GetTextureModule() { return textureModule; }
+    ModuleRenderExercise* GetModuleRenderExercise() { return render_exercise; }
     
     void RequestBrowser(const char* url);
     std::vector<float>* GetFrameRate() { return &frameRate; };

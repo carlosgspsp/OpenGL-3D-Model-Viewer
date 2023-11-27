@@ -19,6 +19,8 @@ public:
 	//update_status PostUpdate();
 	bool CleanUp();
 
+	Model* GetModel() { return &model; };
+
 
 private:
 	ModuleProgram program;

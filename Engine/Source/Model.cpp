@@ -30,6 +30,11 @@ void Model::Load(const char* assetFileName) {
 		size_t pos = filePath.rfind('/');
 		if (pos != std::string::npos) {
 			filePath.erase(pos + 1, filePath.size() - 1);
+		}else{
+			pos = filePath.rfind('\\');
+			if (pos != std::string::npos) {
+				filePath.erase(pos + 1, filePath.size() - 1);
+			}
 		}
 		for (const auto& srcMesh : srcModel.meshes) {
 			for (const auto& primitive : srcMesh.primitives) {
@@ -59,4 +64,11 @@ void Model::DrawModel(unsigned program_id) {
 	for (unsigned int i = 0; i < meshes.size(); i++) {
 		meshes.at(i).Draw(textures, program_id);
 	}
+}
+
+
+void Model::Clear() {
+	textures.clear();
+	meshes.clear();
+		filePath = "";
 }

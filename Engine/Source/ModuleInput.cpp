@@ -5,8 +5,10 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
+#include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include <backends/imgui_impl_sdl2.h>
+#include "Model.h"
 
 
 
@@ -88,7 +90,7 @@ update_status ModuleInput::PreUpdate()
 			return UPDATE_STOP;
 
 		case SDL_WINDOWEVENT:
-			if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED ) //|| event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
 				App->GetOpenGL()->WindowResized(event.window.data1, event.window.data2);
 			break;
 
@@ -110,7 +112,13 @@ update_status ModuleInput::PreUpdate()
 		case SDL_MOUSEWHEEL:
 			mouse_wheel.x = event.wheel.x;
 			mouse_wheel.y = event.wheel.y;
+			break;
+		case SDL_DROPFILE:
+			LOG("FILE DROPPED: %s", event.drop.file);
+			Model* model = App->GetModuleRenderExercise()->GetModel();
 
+			model->Clear();
+			model->Load(event.drop.file);
 			break;
 		}
 	}

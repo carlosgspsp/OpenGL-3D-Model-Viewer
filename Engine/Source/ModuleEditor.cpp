@@ -10,8 +10,7 @@ ModuleEditor::ModuleEditor() {
 	context = nullptr;
 	fullScreen = false;
 	resizable = true;
-	width = SCREEN_WIDTH;
-	height = SCREEN_HEIGHT;
+	
 }
 ModuleEditor::~ModuleEditor() {
 
@@ -26,11 +25,16 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	   // Enable ImGui outside Viewports
+	//io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	   // Enable ImGui outside Viewports
 	
 
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+
+	width = App->GetWindow()->GetScreenSize().x;
+	height = App->GetWindow()->GetScreenSize().y;
+
 
 	return true;
 }
@@ -40,10 +44,22 @@ update_status ModuleEditor::Update() {
 	ImGui_ImplSDL2_NewFrame(App->GetWindow()->window);
 	ImGui::NewFrame();
 
+	
+	
 	static bool demo = true;
 	if (demo) {
 		ImGui::ShowDemoWindow(&demo);
 	}
+
+
+	//ImGui::Begin("DockSpace");
+
+	/*ImGuiID dockspace_id = ImGui::GetID("")
+	ImGui::DockSpace();
+	ImGui::End();
+	*/
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+
 
 	bool about_popup = false;
 	static bool mainMenu_window = true; 
@@ -196,7 +212,7 @@ update_status ModuleEditor::Update() {
 		ImGui::EndChild();
 		
 		
-
+		
 		ImGui::End();
 	}
 

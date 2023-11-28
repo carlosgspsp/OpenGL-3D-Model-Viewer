@@ -101,8 +101,8 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		texByteOffset = texCoordAcc.byteOffset + texCoordView.byteOffset;
 		texByteStride = texCoordView.byteStride;
 
-		//float2* ptr = reinterpret_cast<float2*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+sizeof(float)*3*vertexCount);
-		float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+(sizeof(float)*3*vertexCount)/sizeof(float2);
+		float2* ptr = reinterpret_cast<float2*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+sizeof(float)*3*vertexCount);
+		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+(sizeof(float)*3*vertexCount)/sizeof(float2); //MIRAR EL +4 porque puede ser que sin el se trague un vertice o no
 		
 
 		for (size_t i = 0; i < texCoordAcc.count; i++) {

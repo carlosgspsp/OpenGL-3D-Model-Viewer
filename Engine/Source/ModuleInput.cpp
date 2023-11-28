@@ -190,10 +190,10 @@ bool ModuleInput::CleanUp()
 
 KeyState ModuleInput::GetKey(int id) const
 {
-	if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
+	//if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
 		return keyboard[id];
-	else
-		return KEY_IDLE;
+	//else
+		//return KEY_IDLE;
 }
 
 KeyState ModuleInput::GetMouseButtonDown(int id) const

@@ -177,17 +177,28 @@ update_status ModuleEditor::Update() {
 
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
-			ImGui::Text("SDL Version: %s", App->GetSDLVersion());
+
+			SDL_version version; 
+			SDL_VERSION(&version);
+
+			GLfloat total_vram, available_vram, usage;
+			glGetFloatv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &total_vram);
+			glGetFloatv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &available_vram);
+			
+			
+			usage = (total_vram - available_vram) / total_vram;
+
+			ImGui::Text("SDL Version: %u.%u.%u", version.major, version.minor, version.patch);
 			ImGui::Separator();
 			ImGui::Text("CPUs: %i (Cache: %.1fkb)" ,App->GetCPUsCount(), App->GetChacheSize());
 			ImGui::Text("System RAM: %.1fGB ", App->GetSystemRAM());
 			ImGui::Separator();
-			ImGui::Text("GPU: %s");
-			ImGui::Text("Brand: %s");
-			ImGui::Text("VRAM Budget: %s");
-			ImGui::Text("VRAM Usage: %s");
-			ImGui::Text("VRAM Available: %s");
-			ImGui::Text("VRAM Reserved: %s");
+			ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
+			ImGui::Text("GPU Brand: %s" , glGetString(GL_RENDERER));
+			ImGui::Text("Driver Version: %s", glGetString(GL_VERSION));
+			ImGui::Text("VRAM Budget: %.1fMB", (total_vram/1024.0f));
+			ImGui::Text("VRAM Usage: %.2f%%", usage*100.0f);
+			ImGui::Text("VRAM Available: %.2fMB" ,available_vram/1024);
 		}
 
 

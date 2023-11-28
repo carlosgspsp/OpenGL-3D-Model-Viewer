@@ -7,6 +7,9 @@
 #pragma comment( lib, "Dependencies/SDL/lib/x64/SDL2.lib" )
 #pragma comment( lib, "Dependencies/SDL/lib/x64/SDL2main.lib" )
 
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
 enum main_states
 {
 	MAIN_CREATION,  

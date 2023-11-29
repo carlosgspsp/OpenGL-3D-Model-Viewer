@@ -15,8 +15,13 @@ private:
 	unsigned VBO, EBO, VAO, programID, textureID;
 	int vertexCount, indexCount;
 	size_t posByteOffset, posByteStride, texByteOffset, texByteStride;
+	std::string name;
 public:
 	
+	int GetIndexCount() { return indexCount; }
+	int GetVertexCount() { return vertexCount; }
+	std::string GetName() { return name; }
+
 	void Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
 	void CreateProgram();
 	void LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);

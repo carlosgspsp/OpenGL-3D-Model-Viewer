@@ -3,6 +3,8 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
+#include "ModuleRenderExercise.h"
+#include "DirectXTex/DirectXTex.h"
 #include ".\backends\imgui_impl_sdl2.h"
 #include ".\backends\imgui_impl_opengl3.h"
 
@@ -161,15 +163,32 @@ update_status ModuleEditor::Update() {
 		{
 			if (ImGui::TreeNode("Geometry"))
 			{
+				std::vector<Mesh> meshes = App->GetModuleRenderExercise()->GetModel()->GetMeshes();
+				for (int i = 0; i < meshes.size(); i++) {
+					ImGui::Separator();
+					ImGui::Text("Mesh name: %s", meshes[i].GetName().c_str());
+					ImGui::Text("Indices: %i", meshes[i].GetIndexCount());
+					ImGui::Text("Vertices: %i", meshes[i].GetVertexCount());
+					//ImGui::Text("Triangles: %i");
+				}
+				
 				ImGui::TreePop();
 			}
-			if (ImGui::TreeNode("Texture"))
+			if (ImGui::TreeNode("Textures"))
 			{
-				ImGui::Text("File: %s", App->GetSDLVersion());
-				ImGui::Text("Width: %s", App->GetSDLVersion());
-				ImGui::SameLine();
-				ImGui::Text("Height: %s", App->GetSDLVersion());
-				ImGui::Text("Format: %s", App->GetSDLVersion());
+
+				tinygltf::Model model = App->GetModuleRenderExercise()->GetModel()->GetSrcModel();
+				std::vector<tinygltf::Image> images = model.images;
+				for (int i = 0; i < images.size(); i++) {
+					ImGui::Separator();
+					ImGui::Text("File name: %s", images[i].name.c_str());
+					ImGui::Text("Width: %i", images[i].width);
+					ImGui::SameLine();
+					ImGui::Text("Height: %i", images[i].height);
+				}
+
+
+				
 				ImGui::TreePop();
 			}
 		}
@@ -189,13 +208,17 @@ update_status ModuleEditor::Update() {
 			usage = (total_vram - available_vram) / total_vram;
 
 			ImGui::Text("SDL Version: %u.%u.%u", version.major, version.minor, version.patch);
+			ImGui::Text("OpenGL Supported Version: %s", glGetString(GL_VERSION));
+			ImGui::Text("Glew Version: %s", glewGetString(GLEW_VERSION));
+			ImGui::Text("GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+			ImGui::Text("DirectXTex Version: %u", DIRECTX_TEX_VERSION);
+			ImGui::Text("ImGui Version: %s", ImGui::GetVersion());
 			ImGui::Separator();
 			ImGui::Text("CPUs: %i (Cache: %.1fkb)" ,App->GetCPUsCount(), App->GetChacheSize());
 			ImGui::Text("System RAM: %.1fGB ", App->GetSystemRAM());
 			ImGui::Separator();
 			ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
 			ImGui::Text("GPU Brand: %s" , glGetString(GL_RENDERER));
-			ImGui::Text("Driver Version: %s", glGetString(GL_VERSION));
 			ImGui::Text("VRAM Budget: %.1fMB", (total_vram/1024.0f));
 			ImGui::Text("VRAM Usage: %.2f%%", usage*100.0f);
 			ImGui::Text("VRAM Available: %.2fMB" ,available_vram/1024);
@@ -213,7 +236,7 @@ update_status ModuleEditor::Update() {
 
 		ImGui::Checkbox("AutoScroll", &autoscroll);
 		ImGui::Separator();
-		ImGui::BeginChild("Console2");
+		ImGui::BeginChild("##ConsolePanel");
 
 		ImGui::TextUnformatted(logs.begin(), logs.end());
 		

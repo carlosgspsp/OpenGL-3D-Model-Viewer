@@ -16,7 +16,6 @@
 
 void Model::Load(const char* assetFileName) {
 	tinygltf::TinyGLTF gltfContext;
-	tinygltf::Model srcModel;
 	std::string error, warning;
 
 
@@ -43,11 +42,11 @@ void Model::Load(const char* assetFileName) {
 				meshes.push_back(*mesh);
 			}
 		}
-		LoadMaterials(srcModel);
+		LoadMaterials();
 	}
 }
 
-void Model::LoadMaterials(const tinygltf::Model& srcModel) {
+void Model::LoadMaterials() {
 	for (const auto& srcMaterial : srcModel.materials) {
 		unsigned int textureId = 0;
 		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0) {
@@ -70,5 +69,6 @@ void Model::DrawModel(unsigned program_id) {
 void Model::Clear() {
 	textures.clear();
 	meshes.clear();
-		filePath = "";
+	srcModel = tinygltf::Model();
+	filePath = "";
 }

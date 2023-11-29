@@ -10,6 +10,7 @@
 
 
 void Mesh::Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
+	name = srcMesh.name;
 	textureID = primitive.material;
 	LoadVBO(srcModel, srcMesh, primitive);
 	LoadEBO(srcModel, srcMesh, primitive);

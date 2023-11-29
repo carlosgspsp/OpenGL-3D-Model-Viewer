@@ -169,7 +169,7 @@ update_status ModuleEditor::Update() {
 					ImGui::Text("Mesh name: %s", meshes[i].GetName().c_str());
 					ImGui::Text("Indices: %i", meshes[i].GetIndexCount());
 					ImGui::Text("Vertices: %i", meshes[i].GetVertexCount());
-					//ImGui::Text("Triangles: %i");
+					ImGui::Text("Triangles: %i", meshes[i].GetIndexCount()/3);
 				}
 				
 				ImGui::TreePop();
@@ -179,12 +179,14 @@ update_status ModuleEditor::Update() {
 
 				tinygltf::Model model = App->GetModuleRenderExercise()->GetModel()->GetSrcModel();
 				std::vector<tinygltf::Image> images = model.images;
+				std::vector<DirectX::ScratchImage*> scrImages = App->GetModuleRenderExercise()->GetModel()->GetScrImages();
+
 				for (int i = 0; i < images.size(); i++) {
 					ImGui::Separator();
 					ImGui::Text("File name: %s", images[i].name.c_str());
-					ImGui::Text("Width: %i", images[i].width);
+					ImGui::Text("Width: %i", scrImages[i]->GetMetadata().width);
 					ImGui::SameLine();
-					ImGui::Text("Height: %i", images[i].height);
+					ImGui::Text("Height: %i", scrImages[i]->GetMetadata().height);
 				}
 
 

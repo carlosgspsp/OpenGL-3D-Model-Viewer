@@ -16,17 +16,16 @@ ModuleTexture::~ModuleTexture()
 
 
 
-DirectX::ScratchImage ModuleTexture::LoadTextureFile(const wchar_t* texture_file_name) {
+void  ModuleTexture::LoadTextureFile(DirectX::ScratchImage& scrImage, const wchar_t* texture_file_name) {
 
-	DirectX::ScratchImage img;
-	HRESULT hr = DirectX::LoadFromDDSFile(texture_file_name, DirectX::DDS_FLAGS_NONE, nullptr, img);
+	HRESULT hr = DirectX::LoadFromDDSFile(texture_file_name, DirectX::DDS_FLAGS_NONE, nullptr, scrImage);
 	if (FAILED(hr)) {
 		//LOG("\nLOAD FROM DDS FILE FAILED\n");
-		hr = DirectX::LoadFromTGAFile(texture_file_name, DirectX::TGA_FLAGS_NONE, nullptr, img);
+		hr = DirectX::LoadFromTGAFile(texture_file_name, DirectX::TGA_FLAGS_NONE, nullptr, scrImage);
 
 		if (FAILED(hr)) {
 			//LOG("\nLOAD FROM TGA FILE FAILED\n");
-			hr = DirectX::LoadFromWICFile(texture_file_name, DirectX::WIC_FLAGS_NONE, nullptr, img);
+			hr = DirectX::LoadFromWICFile(texture_file_name, DirectX::WIC_FLAGS_NONE, nullptr, scrImage);
 
 			if (FAILED(hr)) {
 				assert(false && "File extension not supported");
@@ -44,13 +43,13 @@ DirectX::ScratchImage ModuleTexture::LoadTextureFile(const wchar_t* texture_file
 		//LOG("\nLOAD FROM DDS FILE SUCCEEDED\n");
 	}
 
-	return img;
+	
 
 }
 
-unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage img) {
+unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage* img) {
 	unsigned texture_id;
-	DirectX::TexMetadata metadata = img.GetMetadata();
+	DirectX::TexMetadata metadata = img->GetMetadata();
 	glGenTextures(1, &texture_id);
 	int internalFormat, format, type;
 	glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -79,11 +78,11 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage img) {
 	}
 
 
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, metadata.width, metadata.height, 0, format, type, img.GetPixels());
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, metadata.width, metadata.height, 0, format, type, img->GetPixels());
 
 	if (metadata.mipLevels > -1) {
 		for (size_t i = 0; i < metadata.mipLevels; ++i) {
-			const DirectX::Image* mip = img.GetImage(i, 0, 0);
+			const DirectX::Image* mip = img->GetImage(i, 0, 0);
 			glTexImage2D(GL_TEXTURE_2D, i, internalFormat, mip->width, mip->height, 0, format, type, mip->pixels);
 		}
 	}
@@ -104,6 +103,7 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage img) {
 unsigned int ModuleTexture::Load(std::string texture) {
 
 	std::wstring widestr = std::wstring(texture.begin(), texture.end());
-	unsigned int textureId = LoadTextureGPU(LoadTextureFile(widestr.c_str()));
+	//unsigned int textureId = LoadTextureGPU(LoadTextureFile(widestr.c_str()));
+	unsigned int textureId = 0;
 	return textureId;
 }

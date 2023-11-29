@@ -52,7 +52,16 @@ void Model::LoadMaterials() {
 		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0) {
 			const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
 			const tinygltf::Image& image = srcModel.images[texture.source];
-			textureId = App->GetTextureModule()->Load(filePath+image.uri);
+			
+
+			std::string path = filePath + image.uri;
+			std::wstring widestr = std::wstring(path.begin(), path.end());
+
+			DirectX::ScratchImage* scrImage = new DirectX::ScratchImage();
+			App->GetTextureModule()->LoadTextureFile(*scrImage, widestr.c_str());
+			textureId = App->GetTextureModule()->LoadTextureGPU(scrImage);
+			scrImages.push_back(scrImage);
+			//textureId = App->GetTextureModule()->Load(filePath+image.uri);
 		}
 		textures.push_back(textureId);
 	}

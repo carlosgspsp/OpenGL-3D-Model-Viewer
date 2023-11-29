@@ -1,6 +1,4 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
-
+#pragma once
 #include "Module.h"
 #include "SDL.h"
 #include <MathGeoLib.h>
@@ -33,7 +31,7 @@ public:
 	SDL_Surface* screen_surface = NULL;
 
 
-	float2 GetScreenSize();
+	float2 GetScreenSize() { return screenSize; }
 	void SetScreenSize(float2 screenSize);
 	void SetFullScreen(bool fullScreen);
 	void SetResizable(bool resizable);
@@ -42,4 +40,3 @@ private:
 
 };
 
-#endif // __ModuleWindow_H__

@@ -38,8 +38,8 @@ public:
     ModuleRenderExercise* GetModuleRenderExercise() { return render_exercise; }
     
     void RequestBrowser(const char* url);
-    std::vector<float>* GetFrameRate() { return &frameRate; };
-    std::vector<float>* GetMilliseconds() { return &milliSeconds; };
+    const std::vector<float>* GetFrameRate() { return &frameRate; };
+    const std::vector<float>* GetMilliseconds() { return &milliSeconds; };
 
 
 

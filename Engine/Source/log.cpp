@@ -16,7 +16,8 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 
 	if (App != nullptr) {
-		App->GetEditor()->logs.appendf(tmp_string2);
+		//App->GetEditor()->logs.appendf(tmp_string2);
+		App->GetEditor()->AddLog(tmp_string2);
 	}
 
 }

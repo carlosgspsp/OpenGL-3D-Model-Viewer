@@ -1,8 +1,7 @@
+#include "ModuleInput.h"
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleInput.h"
 #include "ModuleOpenGL.h"
-#include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
 #include "ModuleRenderExercise.h"
@@ -49,7 +48,7 @@ update_status ModuleInput::PreUpdate()
 	static SDL_Event event;
 
 	mouse_motion = { 0, 0 };
-	mouse_wheel = { 0,0 };
+	mouse_wheel = { 0, 0 };
 	
 	//memset(windowEvents, false, WE_COUNT * sizeof(bool));
 

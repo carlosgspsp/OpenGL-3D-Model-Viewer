@@ -1,9 +1,5 @@
 #pragma once
-
-
-#include "ModuleCamera.h"
 #include <vector>
-
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE 
@@ -18,12 +14,11 @@ private:
 	std::string name;
 public:
 	
-	int GetIndexCount() { return indexCount; }
-	int GetVertexCount() { return vertexCount; }
-	std::string GetName() { return name; }
+	int GetIndexCount() const { return indexCount; }
+	int GetVertexCount() const { return vertexCount; }
+	std::string GetName() const { return name; }
 
 	void Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
-	void CreateProgram();
 	void LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
 	void CreateVAO();

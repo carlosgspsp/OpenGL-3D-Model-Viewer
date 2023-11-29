@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "imgui.h"
+
+
 class ModuleEditor : public Module
 {
 
@@ -16,14 +18,18 @@ class ModuleEditor : public Module
 		//update_status PostUpdate();
 		bool CleanUp();
 
+		void AddLog(char str[]);
+
+
 		bool fullScreen, resizable;
 		int width, height;
-		const ImGuiIO* GetIO() { return io; };
-		ImGuiTextBuffer logs;
+		const ImGuiIO* GetIO() const { return io; };
+		
 
 	private:
 		ImGuiIO *io;
 		void* context;
+		ImGuiTextBuffer logs;
 	
 
 };

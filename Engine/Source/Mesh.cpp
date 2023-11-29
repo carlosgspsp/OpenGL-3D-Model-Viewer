@@ -2,11 +2,8 @@
 #include <.\GL\glew.h>
 #include "Mesh.h"
 #include "MathGeoLib.h"
-#include "ModuleWindow.h"
-#include "ModuleTexture.h"
-#include "ModuleProgram.h"
-#include "ModuleDebugDraw.h"
-#include "DebugDraw.h"
+
+
 
 
 void Mesh::Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
@@ -18,22 +15,6 @@ void Mesh::Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, 
 	//CreateProgram();
 }
 
-void Mesh::CreateProgram() {
-	ModuleProgram program;
-	const char* vertex_shader_file = "../Source/VertexShader.glsl";
-	const char* fragment_shader_file = "../Source/FragmentShader.glsl";
-	char* vertex_shader_source = program.LoadShaderSource(vertex_shader_file);
-	char* fragment_shader_source = program.LoadShaderSource(fragment_shader_file);
-	//std::cout << "hola;";
-	//LOG("VERTEX");
-	LOG(vertex_shader_source);
-	//LOG("FRAGMENT");
-	LOG(fragment_shader_source);
-	unsigned vertex_shader_id = program.CompileShader(GL_VERTEX_SHADER, vertex_shader_source);
-	unsigned fragment_shader_id = program.CompileShader(GL_FRAGMENT_SHADER, fragment_shader_source);
-	programID = program.CreateProgram(vertex_shader_id, fragment_shader_id);
-	
-}
 void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
 	const auto& itPos = primitive.attributes.find("POSITION");
 	const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
@@ -57,10 +38,6 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 		SDL_assert(posAcc.type == TINYGLTF_TYPE_VEC3);
 		SDL_assert(posAcc.componentType == GL_FLOAT);
-
-		//App->GetCamera()->SetPosition(App->GetCamera()->GetPosition().x, App->GetCamera()->GetPosition().y, -posAcc.maxValues[2]);
-		//App->GetCamera()->SetPosition(posAcc.maxValues[0], posAcc.maxValues[1], -posAcc.maxValues[2]-.05);
-		//App->GetCamera()->LookAt(float3(0.0f, 0.0f, 0.0f));
 
 		const tinygltf::BufferView& posView = srcModel.bufferViews[posAcc.bufferView];
 		const tinygltf::Buffer& posBuffer = srcModel.buffers[posView.buffer];
@@ -89,7 +66,7 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 	}
 
-	//const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
+
 
 	if (itTexCoord != primitive.attributes.end()) {
 		const tinygltf::Accessor& texCoordAcc = srcModel.accessors[itTexCoord->second];
@@ -124,15 +101,7 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 void Mesh::LoadEBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
 
-	//const auto& itInd = primitive.indices;
 	if (primitive.indices >= 0) {
-
-		/*const tinygltf::Accessor& indAcc = srcModel.accessors[itInd];
-		SDL_assert(indAcc.type == TINYGLTF_TYPE_SCALAR);
-		//SDL_assert(indAcc.componentType == GL_UNSIGNED_INT);
-		const tinygltf::BufferView& posView = srcModel.bufferViews[indAcc.bufferView];
-		const tinygltf::Buffer& posBuffer = srcModel.buffers[posView.buffer];
-		const unsigned char* bufferPos = &(posBuffer.data[indAcc.byteOffset + posView.byteOffset]);*/
 
 		const tinygltf::Accessor& indAcc = srcModel.accessors[primitive.indices];
 		const tinygltf::BufferView& indView = srcModel.bufferViews[indAcc.bufferView];
@@ -182,22 +151,11 @@ void Mesh::CreateVAO() {
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
-	
-	/*
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, posByteStride, (void*)posByteOffset);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, texByteStride, (void*)(texByteOffset));
-	*/
 
 	glBindVertexArray(0);
 }
 
 void Mesh::Draw(const std::vector<unsigned>& textures, unsigned program_id) {
-	//ModuleTexture tex;
-
-	//unsigned texture_id = tex.LoadTextureGPU(tex.LoadTextureFile(L"./Textures/Baboon.ppm"));
 
 	glUseProgram(program_id);
 

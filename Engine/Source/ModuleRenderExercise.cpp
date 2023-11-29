@@ -1,13 +1,12 @@
 #include "Application.h"
 #include "SDL.h"
+#include <.\GL\glew.h>
 #include "ModuleWindow.h"
 #include "ModuleRenderExercise.h"
-#include <.\GL\glew.h>
-#include <iostream>
 #include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"
 #include "DebugDraw.h"
-#include "ModuleTexture.h"
+
 
 
 ModuleRenderExercise::ModuleRenderExercise() {
@@ -15,7 +14,6 @@ ModuleRenderExercise::ModuleRenderExercise() {
 }
 
 bool ModuleRenderExercise::Init() {
-	//vbo = CreateTriangleVBO();
 
 	ModuleProgram program;
 	const char* vertex_shader_file = "../Source/VertexShader.glsl";
@@ -55,17 +53,7 @@ update_status ModuleRenderExercise::Update() {
 	return UPDATE_CONTINUE;
 }
 
-/*
-float4x4 ModuleRenderExercise::LookAt(float3 camera_pos, float3 target_pos, float3 up_vector) {
-	float3 forward = (target_pos - camera_pos).Normalized();
-	float3 right = Cross(forward, up_vector).Normalized();
-	float3 up = Cross(right, forward).Normalized();
-
-	return float4x4(right[0], up[0], -forward[0], camera_pos[0], right[1], up[1], -forward[1], camera_pos[1], right[2], up[2], -forward[2], camera_pos[2], 0, 0, 0, 1);
-}
-*/
-
-unsigned ModuleRenderExercise::CreateTriangleVBO()
+/*unsigned ModuleRenderExercise::CreateTriangleVBO()
 {
 	float vtx_data[] =
 	{ 
@@ -94,7 +82,7 @@ unsigned ModuleRenderExercise::CreateTriangleVBO()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vtx_data), vtx_data, GL_STATIC_DRAW);
 
 	return vbo;
-}
+}*/
 
 // This function must be called one time at destruction of vertex buffer
 void ModuleRenderExercise::DestroyVBO(unsigned vbo)

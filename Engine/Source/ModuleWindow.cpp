@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
-#include "ModuleInput.h"
+
 
 ModuleWindow::ModuleWindow()
 {
@@ -86,10 +86,6 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-
-float2 ModuleWindow::GetScreenSize() {
-	return screenSize;
-}
 
 void ModuleWindow::SetFullScreen(bool fullScreen) {
 

@@ -8,13 +8,9 @@ ModuleTexture::ModuleTexture()
 
 }
 
-
 ModuleTexture::~ModuleTexture()
 {
 }
-
-
-
 
 void  ModuleTexture::LoadTextureFile(DirectX::ScratchImage& scrImage, const wchar_t* texture_file_name) {
 
@@ -30,21 +26,8 @@ void  ModuleTexture::LoadTextureFile(DirectX::ScratchImage& scrImage, const wcha
 			if (FAILED(hr)) {
 				assert(false && "File extension not supported");
 			}
-			else {
-				//LOG("\nLOAD FROM WIC FILE SUCCEEDED\n");
-			}
 		}
-		else {
-			//LOG("\nLOAD FROM TGA FILE SUCCEEDED\n");
-		}
-
 	}
-	else {
-		//LOG("\nLOAD FROM DDS FILE SUCCEEDED\n");
-	}
-
-	
-
 }
 
 unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage* img) {
@@ -100,10 +83,10 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage* img) {
 	return texture_id;
 }
 
-unsigned int ModuleTexture::Load(std::string texture) {
+/*unsigned int ModuleTexture::Load(std::string texture) {
 
 	std::wstring widestr = std::wstring(texture.begin(), texture.end());
 	//unsigned int textureId = LoadTextureGPU(LoadTextureFile(widestr.c_str()));
 	unsigned int textureId = 0;
 	return textureId;
-}
+}*/

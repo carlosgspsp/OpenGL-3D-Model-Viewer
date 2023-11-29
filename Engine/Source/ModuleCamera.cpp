@@ -1,8 +1,9 @@
 #include "ModuleCamera.h"
 #include "Application.h"
-#include "SDL.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "SDL.h"
+
 
 ModuleCamera::ModuleCamera()
 {

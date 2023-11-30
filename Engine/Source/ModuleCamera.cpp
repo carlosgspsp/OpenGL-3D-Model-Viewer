@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleRenderExercise.h"
 #include "SDL.h"
 
 
@@ -122,6 +123,9 @@ void ModuleCamera::ManageKeyboardInput() {
 	if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 		frustum->pos -= float3::unitY * cameraSpeed;
 	}
+	if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+		FocusGeometry(App->GetModuleRenderExercise()->GetModel()->GetMaxPos(), App->GetModuleRenderExercise()->GetModel()->GetMinPos());
+	}
 
 }
 
@@ -206,6 +210,18 @@ void ModuleCamera::CameraPan() {
 void ModuleCamera::CameraZoom() {
 	float2 mouseWheel = App->GetInput()->GetMouseWheel();
 	frustum->pos += frustum->front * zoomSensitivity * mouseWheel.y;
+}
+
+
+void ModuleCamera::FocusGeometry(float3 maxPos, float3 minPos) {
+	float max = maxPos.MaxElement();
+	float height = maxPos[1] - minPos[1];
+	height *= 0.5;
+	SetPosition(0, height, -1);
+	LookAt(float3(0,height,0));
+	SetPosition(0, height, -max * 3.5f);
+
+	
 }
 
 

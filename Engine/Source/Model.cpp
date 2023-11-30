@@ -3,7 +3,10 @@
 #include "ModuleTexture.h"
 #include "Model.h"
 
-
+Model::Model() {
+	maxPos = float3::zero;
+	minPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+}
 
 Model::~Model() {
 	for (int i = 0; i < scrImages.size(); i++) {
@@ -55,6 +58,18 @@ void Model::Load(const char* assetFileName) {
 					if (posAcc.maxValues[2] > maxPos.z) {
 						maxPos.z = posAcc.maxValues[2];
 					}
+
+					if (posAcc.minValues[0] < minPos.x) {
+						minPos.x = posAcc.minValues[0];
+					}
+					if (posAcc.minValues[1] < minPos.y) {
+						minPos.y = posAcc.minValues[1];
+					}
+					if (posAcc.minValues[2] < minPos.z) {
+						minPos.z = posAcc.minValues[2];
+					}
+
+
 				}
 
 				meshes.push_back(*mesh);

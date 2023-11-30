@@ -11,6 +11,7 @@ Download GameEngine.zip file in [release](https://github.com/carlosgspsp/GameEng
 
 - Use “WASD” for a fps-like movement and free look around must be enabled.
 - Use “Q” and Use “E” for moving the camera Up and Down.
+- Press “F” to Focus the camera towards the loaded geomtry.
 - While Right clicking, move the mouse in any direction for free look.
 - Use the mouse Wheel for zooming in and out.
 - Left ALT + Left Click to Rotate de center of the scene.

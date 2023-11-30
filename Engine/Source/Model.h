@@ -22,7 +22,9 @@ public:
 	const std::vector<Mesh>* GetMeshes() const { return &meshes; } 
 	const std::vector<DirectX::ScratchImage*> GetScrImages() const { return scrImages; }
 	const float3 GetMaxPos() const { return maxPos; }
+	const float3 GetMinPos() const { return minPos; }
 
+	Model();
 	~Model();
 
 private:
@@ -31,6 +33,6 @@ private:
 	std::vector<unsigned> textures;
 	std::vector<Mesh> meshes;
 	std::string filePath;
-	float3 maxPos;
+	float3 minPos, maxPos;
 };
 

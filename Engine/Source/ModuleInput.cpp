@@ -123,11 +123,10 @@ update_status ModuleInput::PreUpdate()
 			model->Load(event.drop.file);
 
 			float3 maxpos = model->GetMaxPos();
-			float max = maxpos.MaxElement();
+			float3 minpos = model->GetMinPos();
+			App->GetCamera()->FocusGeometry(maxpos, minpos);
 
-			App->GetCamera()->SetPosition(0,0,-1);
-			App->GetCamera()->LookAt(float3::zero);
-			App->GetCamera()->SetPosition(0, 0, -max*3.5f);
+			
 
 			break;
 		}

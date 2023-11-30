@@ -28,6 +28,7 @@ public:
 	void CameraPan();
 	void CameraZoom();
 	void CameraOrbit();
+	void FocusGeometry(float3 maxPos, float3 minPos);
 	const float3* GetPosition() const { return &frustum->pos; };
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();

@@ -19,8 +19,8 @@ ModuleRenderExercise::~ModuleRenderExercise() {
 bool ModuleRenderExercise::Init() {
 
 	ModuleProgram program;
-	const char* vertex_shader_file = "../Source/VertexShader.glsl";
-	const char* fragment_shader_file = "../Source/FragmentShader.glsl";
+	const char* vertex_shader_file = "./Shaders/VertexShader.glsl";
+	const char* fragment_shader_file = "./Shaders/FragmentShader.glsl";
 	char* vertex_shader_source = program.LoadShaderSource(vertex_shader_file);
 	char* fragment_shader_source = program.LoadShaderSource(fragment_shader_file);
 

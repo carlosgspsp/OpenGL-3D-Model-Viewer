@@ -372,8 +372,6 @@
     <ClInclude Include="Model.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentShader.glsl" />
-    <None Include="VertexShader.glsl" />
     <None Include="Dependencies\MathGeoLib\include\Geometry\KDTree.inl">
       <Filter>MATHGEOLIB</Filter>
     </None>
@@ -392,6 +390,8 @@
     <None Include="Dependencies\MathGeoLib\include\Math\Matrix.inl">
       <Filter>MATHGEOLIB</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShader.glsl" />
+    <None Include="..\Game\Shaders\VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MATHGEOLIB">

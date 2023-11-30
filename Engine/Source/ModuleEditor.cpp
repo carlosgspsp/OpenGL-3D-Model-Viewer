@@ -142,14 +142,6 @@ update_status ModuleEditor::Update() {
 				if (ImGui::CollapsingHeader("Window"))
 				{
 
-					if (ImGui::SliderInt("Width", &width, 1, 3840)) {
-						SDL_SetWindowSize(App->GetWindow()->window, width, height);
-					}
-					if (ImGui::SliderInt("Height", &height, 1, 2160)) {
-						SDL_SetWindowSize(App->GetWindow()->window, width, height);
-					}
-
-
 					if (ImGui::Checkbox("Fullscreen", &fullScreen)) {
 						App->GetWindow()->SetFullScreen(fullScreen);
 
@@ -159,6 +151,22 @@ update_status ModuleEditor::Update() {
 						App->GetWindow()->SetResizable(resizable);
 
 					}
+					
+					if (resizable) {
+
+						if (ImGui::SliderInt("Width", &width, 1, 3840)) {
+
+							SDL_SetWindowSize(App->GetWindow()->window, width, height);
+							App->GetOpenGL()->WindowResized(width, height);
+						}
+						if (ImGui::SliderInt("Height", &height, 1, 2160)) {
+							SDL_SetWindowSize(App->GetWindow()->window, width, height);
+							App->GetOpenGL()->WindowResized(width, height);
+
+						}
+					}
+
+					
 				}
 
 				ImGui::TreePop();

@@ -38,7 +38,7 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 		SDL_assert(posAcc.type == TINYGLTF_TYPE_VEC3);
 		SDL_assert(posAcc.componentType == GL_FLOAT);
-
+		posAcc.maxValues;
 		const tinygltf::BufferView& posView = srcModel.bufferViews[posAcc.bufferView];
 		const tinygltf::Buffer& posBuffer = srcModel.buffers[posView.buffer];
 		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
@@ -182,4 +182,11 @@ void Mesh::Draw(const std::vector<unsigned>& textures, unsigned program_id) {
 	}
 	
 
+}
+
+
+void Mesh::DestroyBuffers() {
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteBuffers(1, &VAO);
 }

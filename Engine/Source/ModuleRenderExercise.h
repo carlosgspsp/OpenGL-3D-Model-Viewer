@@ -10,7 +10,7 @@ class ModuleRenderExercise :
 {
 public:
 	ModuleRenderExercise();
-	//~ModuleRenderExercise();
+	~ModuleRenderExercise();
 
 	bool Init();
 	//update_status PreUpdate();
@@ -18,7 +18,7 @@ public:
 	//update_status PostUpdate();
 	bool CleanUp();
 
-	Model* GetModel() { return &model; };
+	Model* GetModel() { return model; };
 
 
 private:
@@ -28,9 +28,8 @@ private:
 
 	//unsigned CreateTriangleVBO();
 	void RenderWorld();
-	void DestroyVBO(unsigned vbo);
 	
 	ModuleCamera* camera;
-	Model model;
+	Model* model;
 };
 

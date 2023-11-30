@@ -4,6 +4,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
+#include "ModuleCamera.h"
 #include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include <backends/imgui_impl_sdl2.h>
@@ -21,7 +22,9 @@ ModuleInput::ModuleInput()
 
 // Destructor
 ModuleInput::~ModuleInput()
-{}
+{
+	delete keyboard;
+}
 
 // Called before render is available
 bool ModuleInput::Init()
@@ -118,6 +121,14 @@ update_status ModuleInput::PreUpdate()
 
 			model->Clear();
 			model->Load(event.drop.file);
+
+			float3 maxpos = model->GetMaxPos();
+			float max = maxpos.MaxElement();
+
+			App->GetCamera()->SetPosition(0,0,-1);
+			App->GetCamera()->LookAt(float3::zero);
+			App->GetCamera()->SetPosition(0, 0, -max*3.5f);
+
 			break;
 		}
 	}

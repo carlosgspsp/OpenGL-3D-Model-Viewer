@@ -15,7 +15,7 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	update_status PostUpdate();
-	//bool CleanUp();
+	bool CleanUp();
 	void SetFOV(float horizontalFOV);
 	void SetAspectRatio(float aspectRatio);
 	void SetPlaneDistances(float nearPlane, float farPlane);
@@ -28,7 +28,7 @@ public:
 	void CameraPan();
 	void CameraZoom();
 	void CameraOrbit();
-	float3 GetPosition() { return frustum->pos; };
+	const float3* GetPosition() const { return &frustum->pos; };
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 
@@ -41,6 +41,6 @@ private:
 	float2 mouseSensitivity, panSensitivity;
 	float zoomSensitivity;
 	Frustum* frustum;
-	float4x4* camera_matrix;
+	float4x4 camera_matrix;
 };
 

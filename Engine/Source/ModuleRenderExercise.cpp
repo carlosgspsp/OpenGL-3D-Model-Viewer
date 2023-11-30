@@ -10,9 +10,12 @@
 
 
 ModuleRenderExercise::ModuleRenderExercise() {
-
+	model = new Model();
 }
 
+ModuleRenderExercise::~ModuleRenderExercise() {
+	delete model;
+}
 bool ModuleRenderExercise::Init() {
 
 	ModuleProgram program;
@@ -31,12 +34,13 @@ bool ModuleRenderExercise::Init() {
 	program_id = program.CreateProgram(vertex_shader_id, fragment_shader_id);
 
 	
+
 	//model.Load("./Models/TriangleWithoutIndices/TriangleWithoutIndices.gltf");
 	//model.Load("./Models/Triangle/Triangle.gltf");
 	//model.Load("./Models/BoxInterleaved/BoxInterleaved.gltf");
 	//model.Load("./Models/Box/Box.gltf");
 	//model.Load("./Models/BoxTextured/BoxTextured.gltf");
-	model.Load("./Models/BakerHouse/BakerHouse.gltf");
+	model->Load("./Models/BakerHouse/BakerHouse.gltf");
 	//model.Load("./Models/Duck/Duck.gltf");
 	
 	camera = App->GetCamera();
@@ -48,7 +52,7 @@ update_status ModuleRenderExercise::Update() {
 
 	RenderWorld();
 	
-	model.DrawModel(program_id);
+	model->DrawModel(program_id);
 	
 	return UPDATE_CONTINUE;
 }
@@ -84,13 +88,7 @@ update_status ModuleRenderExercise::Update() {
 	return vbo;
 }*/
 
-// This function must be called one time at destruction of vertex buffer
-void ModuleRenderExercise::DestroyVBO(unsigned vbo)
-{
-	glDeleteBuffers(1, &vbo);
-}
 
-// This function must be called each frame for drawing the triangle
 void ModuleRenderExercise::RenderWorld()
 {
 	
@@ -118,7 +116,6 @@ void ModuleRenderExercise::RenderWorld()
 bool ModuleRenderExercise::CleanUp()
 {
 	glDeleteProgram(program_id);
-	//DestroyVBO(vbo);
 	return true;
 }
 

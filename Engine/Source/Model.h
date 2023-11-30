@@ -6,6 +6,7 @@
 #include "tiny_gltf.h"
 #include "DirectXTex/DirectXTex.h"
 #include "Mesh.h"
+#include <Math/float3.h>
 
 
 
@@ -20,8 +21,9 @@ public:
 	const tinygltf::Model* GetSrcModel() const { return &srcModel; }
 	const std::vector<Mesh>* GetMeshes() const { return &meshes; } 
 	const std::vector<DirectX::ScratchImage*> GetScrImages() const { return scrImages; }
+	const float3 GetMaxPos() const { return maxPos; }
 
-
+	~Model();
 
 private:
 	tinygltf::Model srcModel;
@@ -29,5 +31,6 @@ private:
 	std::vector<unsigned> textures;
 	std::vector<Mesh> meshes;
 	std::string filePath;
+	float3 maxPos;
 };
 

@@ -5,12 +5,21 @@
 
 
 
+Model::~Model() {
+	for (int i = 0; i < scrImages.size(); i++) {
+		delete scrImages[i];
+	}
 
+	for (int i = 0; i < meshes.size(); i++) {
+		meshes[i].DestroyBuffers();
+	}
+}
 
 void Model::Load(const char* assetFileName) {
 	tinygltf::TinyGLTF gltfContext;
 	std::string error, warning;
 
+	maxPos = float3::zero;
 
 	bool loadOk = gltfContext.LoadASCIIFromFile(&srcModel , &error, &warning, assetFileName);
 
@@ -32,6 +41,22 @@ void Model::Load(const char* assetFileName) {
 			for (const auto& primitive : srcMesh.primitives) {
 				Mesh* mesh = new Mesh;
 				mesh->Load(srcModel, srcMesh, primitive);
+				
+				const auto& itPos = primitive.attributes.find("POSITION");
+				if (itPos != primitive.attributes.end()) {
+					const tinygltf::Accessor& posAcc = srcModel.accessors[itPos->second];
+					
+					if (posAcc.maxValues[0] > maxPos.x) {
+						maxPos.x = posAcc.maxValues[0];
+					}
+					if (posAcc.maxValues[1] > maxPos.y) {
+						maxPos.y = posAcc.maxValues[1];
+					}
+					if (posAcc.maxValues[2] > maxPos.z) {
+						maxPos.z = posAcc.maxValues[2];
+					}
+				}
+
 				meshes.push_back(*mesh);
 			}
 		}
@@ -70,7 +95,17 @@ void Model::DrawModel(unsigned program_id) {
 
 void Model::Clear() {
 	textures.clear();
-	meshes.clear();
 	srcModel = tinygltf::Model();
+
+	for (int i = 0; i < scrImages.size(); i++) {
+		delete scrImages[i];
+	}
+	scrImages.clear();
+
+	for (int i = 0; i < meshes.size(); i++) {
+		meshes[i].DestroyBuffers();
+	}
+	meshes.clear();
+		
 	filePath = "";
 }

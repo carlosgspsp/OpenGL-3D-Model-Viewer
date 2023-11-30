@@ -7,41 +7,28 @@
 
 ModuleCamera::ModuleCamera()
 {
-
+	frustum = new Frustum();
 }
 
-// Destructor
 ModuleCamera::~ModuleCamera()
 {
+	delete frustum;
 }
 
 
-// Called before render is available
 bool ModuleCamera::Init()
 {
-	frustum = new Frustum();
-	camera_matrix = new float4x4();
-	
 
-	//int w;
-	//int h;
-	//SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
 	float2 screenSize = App->GetWindow()->GetScreenSize();
 
 	frustum->type = FrustumType::PerspectiveFrustum;
-	//frustum->pos = float3::zero;
-	frustum->pos = float3(0.0f, 4.0f, 8.0f);
-	//frustum->front = -float3::unitZ;
-	//frustum->up = float3::unitY;
+	frustum->pos = float3(0.0f, 0.25f, 0.5f);
 	frustum->nearPlaneDistance = 0.1f;
 	frustum->farPlaneDistance = 1000.0f;
 	frustum->verticalFov = math::pi / 4.0f;
-	//frustum->horizontalFov = 2.0f * atanf(tanf(frustum->verticalFov * 0.5f)) * ((float)(w)) / ((float)(h));
 	frustum->horizontalFov = 2.0f * atanf(tanf(frustum->verticalFov * 0.5f) * screenSize.x / screenSize.y);
 	float angle = RadToDeg(frustum->horizontalFov);
 
-	//SetFOV(61.39f);
-	//SetAspectRatio(16.0f/9.0f);
 	LookAt(float3(0.0f, 0.0f, 0.0f));
 
 	angle = RadToDeg(frustum->verticalFov);
@@ -54,7 +41,6 @@ bool ModuleCamera::Init()
 	zoomSensitivity = 0.1f;
 	yaw = -90.0f;
 	pitch = -RadToDeg(float3(0.0, 0.0, 1.0).AngleBetween(frustum->pos));
-	//pitch = 0;
 
 	verticalPan = 0.0f;
 	horizontalPan = 0.0f;
@@ -68,10 +54,6 @@ float4x4 ModuleCamera::GetProjectionMatrix() {
 }
 
 float4x4 ModuleCamera::GetViewMatrix() {
-	//*camera_matrix = LookAt(0, 0, 0);
-	//LookAt(frustum->front);
-
-	//float4x4 view_matrix = camera_matrix->Inverted();
 	float4x4 view_matrix = frustum->ViewMatrix();
 	return view_matrix;
 }
@@ -85,29 +67,24 @@ void ModuleCamera::LookAt(float3 target_pos) {
 	frustum->front = forward;
 	frustum->up = up;
 
-	*camera_matrix = float4x4(right[0], up[0], -forward[0], frustum->pos[0], right[1], up[1], -forward[1], frustum->pos[1], right[2], up[2], -forward[2], frustum->pos[2], 0, 0, 0, 1);
+	camera_matrix = float4x4(right[0], up[0], -forward[0], frustum->pos[0], right[1], up[1], -forward[1], frustum->pos[1], right[2], up[2], -forward[2], frustum->pos[2], 0, 0, 0, 1);
 
+	yaw = 90.0f;
+	pitch = 0.0f;
 }
 
 
-void ModuleCamera::SetFOV(float horizontalFOV) { //DEBUGEAR
-	//int w;
-	//int h;
-	//SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+void ModuleCamera::SetFOV(float horizontalFOV) {
+
 
 	float2 screenSize = App->GetWindow()->GetScreenSize();
 
-	//float aspectRatio = frustum->AspectRatio();
-	//float aspect1 = tanf(frustum->horizontalFov / 2.0f) / tanf(frustum->verticalFov / 2.0f);
+
 	float aspect_normal = screenSize.x / screenSize.y;
 	frustum->horizontalFov = DegToRad(horizontalFOV);
 
 	frustum->verticalFov = 2.0f * atanf(tanf(frustum->horizontalFov * 0.5f) * (1.0f / aspect_normal));
 
-
-	//float aspect2 = tanf(frustum->horizontalFov / 2.0f) / tanf(frustum->verticalFov / 2.0f);
-	//float aspectRatio2 = frustum->AspectRatio();
-	//float aspect_normal2 = (float)w / (float)h;
 }
 
 void ModuleCamera::SetPlaneDistances(float nearPlane, float farPlane) {
@@ -150,7 +127,7 @@ void ModuleCamera::ManageKeyboardInput() {
 
 void ModuleCamera::ManageMouseInput() {
 	if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-	CameraOrbit();
+		CameraOrbit();
 	}
 	else if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
 		CameraRotation();
@@ -161,7 +138,7 @@ void ModuleCamera::ManageMouseInput() {
 	else if (App->GetInput()->GetMouseWheel().y != 0) {
 		CameraZoom();
 	}
-	
+
 }
 void ModuleCamera::CameraRotation() {
 
@@ -217,11 +194,11 @@ void ModuleCamera::CameraPan() {
 	offset.x *= panSensitivity.x;
 	offset.y *= panSensitivity.y;
 
-	 horizontalPan -= offset.x;
-	 verticalPan += offset.y;
+	horizontalPan -= offset.x;
+	verticalPan += offset.y;
 
-	 frustum->pos += float3::unitY *offset.y;
-	 frustum->pos += frustum->WorldRight() * offset.x;
+	frustum->pos += float3::unitY * offset.y;
+	frustum->pos += frustum->WorldRight() * offset.x;
 
 }
 
@@ -263,7 +240,7 @@ void ModuleCamera::CameraOrbit() {
 	frustum->front = newfront;
 	float3 right = frustum->front.Cross(float3::unitY).Normalized();
 	frustum->up = right.Cross(frustum->front).Normalized();
-	 
+
 
 	frustum->Translate(-frustum->front * radius);
 
@@ -290,4 +267,9 @@ update_status ModuleCamera::PostUpdate()
 {
 
 	return UPDATE_CONTINUE;
+}
+
+
+bool ModuleCamera::CleanUp() {
+	return true;
 }

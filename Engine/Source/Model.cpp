@@ -16,6 +16,10 @@ Model::~Model() {
 	for (int i = 0; i < meshes.size(); i++) {
 		meshes[i].DestroyBuffers();
 	}
+
+	for (int i = 0; i < textures.size(); i++) {
+		glDeleteTextures(1, &textures[i]);
+	}
 }
 
 void Model::Load(const char* assetFileName) {
@@ -109,6 +113,10 @@ void Model::DrawModel(unsigned program_id) {
 
 
 void Model::Clear() {
+
+	for (int i = 0; i < textures.size(); i++) {
+		glDeleteTextures(1, &textures[i]);
+	}
 	textures.clear();
 	srcModel = tinygltf::Model();
 

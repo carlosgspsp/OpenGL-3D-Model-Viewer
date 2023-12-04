@@ -1,7 +1,7 @@
 #include "Application.h"
-#include "SDL.h"
 #include <.\GL\glew.h>
 #include "ModuleWindow.h"
+#include "SDL.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"

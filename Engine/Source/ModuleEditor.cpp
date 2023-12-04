@@ -1,3 +1,5 @@
+#include ".\backends\imgui_impl_sdl2.h"
+#include ".\backends\imgui_impl_opengl3.h"
 #include "ModuleEditor.h"
 #include "Globals.h"
 #include "Application.h"
@@ -5,8 +7,10 @@
 #include "ModuleOpenGL.h"
 #include "ModuleRenderExercise.h"
 #include "DirectXTex/DirectXTex.h"
-#include ".\backends\imgui_impl_sdl2.h"
-#include ".\backends\imgui_impl_opengl3.h"
+#include "SDL.h"
+
+#include <.\GL\glew.h>
+
 
 
 
@@ -232,8 +236,8 @@ update_status ModuleEditor::Update() {
 			ImGui::Text("DirectXTex Version: %u", DIRECTX_TEX_VERSION);
 			ImGui::Text("ImGui Version: %s", ImGui::GetVersion());
 			ImGui::Separator();
-			ImGui::Text("CPUs: %i (Cache: %.1fkb)", App->GetCPUsCount(), App->GetChacheSize());
-			ImGui::Text("System RAM: %.1fGB ", App->GetSystemRAM());
+			ImGui::Text("CPUs: %i (Cache: %.1fkb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+			ImGui::Text("System RAM: %.1fGB ", SDL_GetSystemRAM());
 			ImGui::Separator();
 			ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
 			ImGui::Text("GPU Brand: %s", glGetString(GL_RENDERER));

@@ -1,9 +1,10 @@
 #pragma once
 #include "Module.h"
-#include "SDL.h"
-#include <MathGeoLib.h>
+#include <Math/float2.h>
 
 class Application;
+class SDL_Window;
+class SDL_Surface;
 
 class ModuleWindow : public Module
 {
@@ -31,7 +32,7 @@ public:
 	SDL_Surface* screen_surface = NULL;
 
 
-	float2 GetScreenSize() { return screenSize; }
+	const float2 GetScreenSize() const { return screenSize; }
 	void SetScreenSize(float2 screenSize);
 	void SetFullScreen(bool fullScreen);
 	void SetResizable(bool resizable);

@@ -5,6 +5,14 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE 
 #include "tiny_gltf.h"
 
+
+namespace tinygltf
+{
+	class Model;
+	class Mesh;
+	class Primitive;
+}
+
 class Mesh
 {
 private:

@@ -1,7 +1,7 @@
 #include "ModuleTexture.h"
 #include "Globals.h"
 #include <.\GL\glew.h>
-
+#include "DirectXTex/DirectXTex.h"
 
 ModuleTexture::ModuleTexture()
 {

@@ -1,8 +1,9 @@
 #pragma once
 #include "Module.h"
-#include <MathGeoLib.h>
-#include "SDL.h"
-
+#include <Math/float2.h>
+#include <Math/float3.h>
+#include <Math/float4x4.h>
+#include <Geometry/Frustum.h>
 
 class ModuleCamera :
     public Module
@@ -27,7 +28,7 @@ public:
 	void CameraRotation();
 	void CameraPan();
 	void CameraZoom();
-	void CameraOrbit();
+	void CameraOrbit(float3 maxPos, float3 minPos);
 	void FocusGeometry(float3 maxPos, float3 minPos);
 	const float3* GetPosition() const { return &frustum->pos; };
 	float4x4 GetProjectionMatrix();

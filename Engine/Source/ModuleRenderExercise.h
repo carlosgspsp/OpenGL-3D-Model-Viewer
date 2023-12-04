@@ -18,7 +18,7 @@ public:
 	//update_status PostUpdate();
 	bool CleanUp();
 
-	Model* GetModel() { return model; };
+	Model* GetModel() const { return model; }
 
 
 private:

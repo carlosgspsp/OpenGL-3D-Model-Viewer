@@ -4,8 +4,8 @@
 #include<vector>
 #include "Globals.h"
 #include "Module.h"
-#include "SDL.h"
-#include <.\GL\glew.h>
+
+
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -42,18 +42,6 @@ public:
     const std::vector<float>* GetMilliseconds() { return &milliSeconds; };
 
 
-
-    //Hardware CPU Info
-    const char* GetSDLVersion() { return SDL_GetRevision(); }
-    const int GetCPUsCount() { return SDL_GetCPUCount(); }
-    const float GetChacheSize() { return SDL_GetCPUCacheLineSize(); }
-    const float GetSystemRAM() { return SDL_GetSystemRAM(); }
-    
-    //GPU Info
-    const GLubyte* GetGPU() { return glGetString(GL_RENDER); }
-
-  
-
 private:
 
     ModuleOpenGL* render = nullptr;
@@ -69,7 +57,7 @@ private:
    
     std::vector<float> frameRate;
     std::vector<float> milliSeconds;
-    int vectorPos;
+    int vectorPos = 0;
 
     std::list<Module*> modules;
 

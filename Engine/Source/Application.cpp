@@ -1,6 +1,7 @@
 #pragma once
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "SDL.h"
 #include "ModuleOpenGL.h"
 #include "ModuleInput.h"
 #include "ModuleRenderExercise.h"
@@ -97,5 +98,4 @@ bool Application::CleanUp()
 void Application::RequestBrowser(const char* url) {
 	ShellExecuteA(NULL, "open", url, NULL, NULL, 0);
 }
-
 

@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
-#define TINYGLTF_NO_STB_IMAGE_WRITE
-#define TINYGLTF_NO_STB_IMAGE
-#define TINYGLTF_NO_EXTERNAL_IMAGE 
-#include "tiny_gltf.h"
-#include "DirectXTex/DirectXTex.h"
 #include "Mesh.h"
 #include <Math/float3.h>
 
+
+
+namespace DirectX
+{
+	class ScratchImage;
+}
 
 
 class Model

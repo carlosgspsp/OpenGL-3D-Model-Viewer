@@ -131,7 +131,7 @@ void ModuleCamera::ManageKeyboardInput() {
 
 void ModuleCamera::ManageMouseInput() {
 	if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-		CameraOrbit();
+		CameraOrbit(App->GetModuleRenderExercise()->GetModel()->GetMaxPos(), App->GetModuleRenderExercise()->GetModel()->GetMinPos());
 	}
 	else if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
 		CameraRotation();
@@ -226,9 +226,14 @@ void ModuleCamera::FocusGeometry(float3 maxPos, float3 minPos) {
 
 
 
-void ModuleCamera::CameraOrbit() {
+void ModuleCamera::CameraOrbit(float3 maxPos, float3 minPos) {
 
-	float radius = frustum->pos.Distance(float3::zero);
+	float max = maxPos.MaxElement();
+	float height = maxPos[1] - minPos[1];
+	height *= 0.5;
+	float3 center = (maxPos + minPos)/2.0f;
+
+	float radius = frustum->pos.Distance(center);
 	float2 mousePosition = App->GetInput()->GetMousePosition();
 	float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
 	float2 offset(lastMousePosition - mousePosition);
@@ -245,7 +250,7 @@ void ModuleCamera::CameraOrbit() {
 		pitch = -89.0f;
 
 
-	frustum->pos = float3::zero;
+	frustum->pos = center;
 
 	float3 newfront;
 	newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));

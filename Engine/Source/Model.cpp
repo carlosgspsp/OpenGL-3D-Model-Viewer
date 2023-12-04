@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "Model.h"
+#include "DirectXTex/DirectXTex.h"
+#include <.\GL\glew.h>
 
 Model::Model() {
 	maxPos = float3::zero;

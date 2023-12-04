@@ -2,7 +2,7 @@
 #include <.\GL\glew.h>
 #include "Mesh.h"
 #include "MathGeoLib.h"
-
+#include "SDL.h"
 
 
 

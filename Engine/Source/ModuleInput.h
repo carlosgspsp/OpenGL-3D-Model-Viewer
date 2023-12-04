@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "MathGeoLib.h";
+#include <Math/float2.h>
 
 typedef unsigned __int8 Uint8;
 

@@ -8,9 +8,10 @@
 #include "ModuleRenderExercise.h"
 #include "DirectXTex/DirectXTex.h"
 #include "SDL.h"
-
+#include "Model.h"
 #include <.\GL\glew.h>
 
+#include "MathGeoLib.h"
 
 
 

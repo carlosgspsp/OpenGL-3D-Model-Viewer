@@ -21,7 +21,7 @@ public:
 	void SetAspectRatio(float aspectRatio);
 	void SetPlaneDistances(float nearPlane, float farPlane);
 	void SetPosition(float x, float y, float z);
-	void SetOrientation();
+	//void SetOrientation();
 	void LookAt(float3 target_pos);
 	void ManageKeyboardInput();
 	void ManageMouseInput();
@@ -36,13 +36,13 @@ public:
 
 
 private:
-	float cameraSpeed;
-	float deltaTime, lastFrame;
-	float yaw, pitch;
-	float verticalPan, horizontalPan;
-	float2 mouseSensitivity, panSensitivity;
-	float zoomSensitivity;
-	Frustum* frustum;
-	float4x4 camera_matrix;
+	float cameraSpeed = 0;
+	float deltaTime = 0, lastFrame = 0;
+	float yaw = 0, pitch = 0;
+	float verticalPan = 0, horizontalPan = 0;
+	float2 mouseSensitivity = float2::zero, panSensitivity = float2::zero;
+	float zoomSensitivity = 0;
+	Frustum* frustum = new Frustum();
+	float4x4 camera_matrix = float4x4::zero;
 };
 

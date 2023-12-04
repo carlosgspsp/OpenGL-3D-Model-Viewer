@@ -4,11 +4,13 @@
 #include "ModuleInput.h"
 #include "ModuleRenderExercise.h"
 #include "SDL.h"
+#include "Math/MathFunc.h"
+#include "Model.h"
 
 
 ModuleCamera::ModuleCamera()
 {
-	frustum = new Frustum();
+	
 }
 
 ModuleCamera::~ModuleCamera()

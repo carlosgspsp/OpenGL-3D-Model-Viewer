@@ -82,11 +82,3 @@ unsigned ModuleTexture::LoadTextureGPU(DirectX::ScratchImage* img) {
 
 	return texture_id;
 }
-
-/*unsigned int ModuleTexture::Load(std::string texture) {
-
-	std::wstring widestr = std::wstring(texture.begin(), texture.end());
-	//unsigned int textureId = LoadTextureGPU(LoadTextureFile(widestr.c_str()));
-	unsigned int textureId = 0;
-	return textureId;
-}*/

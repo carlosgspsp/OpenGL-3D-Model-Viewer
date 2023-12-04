@@ -25,11 +25,11 @@ public:
 
 
 	//The window we'll be rendering to
-	SDL_Window* window = NULL;
+	SDL_Window* window = nullptr;
 
 
 	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
+	SDL_Surface* screen_surface = nullptr;
 
 
 	const float2 GetScreenSize() const { return screenSize; }
@@ -37,7 +37,7 @@ public:
 	void SetFullScreen(bool fullScreen);
 	void SetResizable(bool resizable);
 private:
-	float2 screenSize;
+	float2 screenSize = float2::zero;
 
 };
 

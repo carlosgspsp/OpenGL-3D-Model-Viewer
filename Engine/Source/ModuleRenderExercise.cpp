@@ -5,8 +5,12 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"
+#include "ModuleProgram.h"
 #include "DebugDraw.h"
-
+#include "Model.h"
+#include "Math/float2.h"
+#include "Math/float3.h"
+#include "Math/float4x4.h"
 
 
 ModuleRenderExercise::ModuleRenderExercise() {
@@ -17,6 +21,8 @@ ModuleRenderExercise::~ModuleRenderExercise() {
 	delete model;
 }
 bool ModuleRenderExercise::Init() {
+
+	
 
 	ModuleProgram program;
 	const char* vertex_shader_file = "./Shaders/VertexShader.glsl";
@@ -118,5 +124,7 @@ bool ModuleRenderExercise::CleanUp()
 	glDeleteProgram(program_id);
 	return true;
 }
+
+ Model* ModuleRenderExercise::GetModel() const { return model; }
 
 

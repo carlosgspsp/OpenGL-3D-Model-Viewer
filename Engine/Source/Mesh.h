@@ -16,10 +16,10 @@ namespace tinygltf
 class Mesh
 {
 private:
-	unsigned VBO, EBO, VAO, programID, textureID;
-	int vertexCount, indexCount;
-	size_t posByteOffset, posByteStride, texByteOffset, texByteStride;
-	std::string name;
+	unsigned VBO = 0, EBO = 0, VAO = 0, programID = 0, textureID = 0;
+	int vertexCount = 0, indexCount = 0;
+	size_t posByteOffset = 0, posByteStride = 0, texByteOffset = 0, texByteStride = 0;
+	std::string name = "";
 public:
 	
 	int GetIndexCount() const { return indexCount; }

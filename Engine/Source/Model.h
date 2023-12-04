@@ -33,7 +33,7 @@ private:
 	std::vector<DirectX::ScratchImage*> scrImages;
 	std::vector<unsigned> textures;
 	std::vector<Mesh> meshes;
-	std::string filePath;
-	float3 minPos, maxPos;
+	std::string filePath = "";
+	float3 minPos = float3::zero, maxPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
 };
 

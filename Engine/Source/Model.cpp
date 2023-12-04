@@ -6,8 +6,7 @@
 #include <.\GL\glew.h>
 
 Model::Model() {
-	maxPos = float3::zero;
-	minPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+
 }
 
 Model::~Model() {

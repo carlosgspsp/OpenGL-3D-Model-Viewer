@@ -125,6 +125,12 @@ bool ModuleRenderExercise::CleanUp()
 	return true;
 }
 
- Model* ModuleRenderExercise::GetModel() const { return model; }
+void ModuleRenderExercise::LoadModel(char* file) {
+	model->Load(file);
+}
+
+void ModuleRenderExercise::ClearModel() {
+	model->Clear();
+}
 
 

@@ -24,5 +24,5 @@ public:
 	
 public:
 	
-	void* context;
+	void* context = nullptr;
 };

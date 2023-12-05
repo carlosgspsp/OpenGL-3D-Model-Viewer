@@ -1,8 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "imgui.h"
 
+
+struct ImGuiIO;
+class ImGuiTextBuffer;
 
 class ModuleEditor : public Module
 {
@@ -21,15 +23,15 @@ class ModuleEditor : public Module
 		void AddLog(char str[]);
 
 
-		bool fullScreen, resizable;
-		int width, height;
+		bool fullScreen = false, resizable = true;
+		int width = 0, height = 0;
 		const ImGuiIO* GetIO() const { return io; };
 		
 
 	private:
-		ImGuiIO *io;
-		void* context;
-		ImGuiTextBuffer logs;
+		ImGuiIO *io = nullptr;
+		void* context = nullptr;
+		ImGuiTextBuffer* logs = nullptr;
 	
 
 };

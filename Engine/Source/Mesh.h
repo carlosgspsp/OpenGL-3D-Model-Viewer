@@ -22,9 +22,9 @@ private:
 	std::string name = "";
 public:
 	
-	int GetIndexCount() const { return indexCount; }
-	int GetVertexCount() const { return vertexCount; }
-	std::string GetName() const { return name; }
+	inline const int GetIndexCount() const { return indexCount; }
+	inline const int GetVertexCount() const { return vertexCount; }
+	inline const std::string* GetName() const { return &name; }
 
 	void Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
 	void LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);

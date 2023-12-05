@@ -118,16 +118,15 @@ update_status ModuleInput::PreUpdate()
 			break;
 		case SDL_DROPFILE:
 			LOG("FILE DROPPED: %s", event.drop.file);
-			Model* model = App->GetModuleRenderExercise()->GetModel();
+			
+			App->GetModuleRenderExercise()->ClearModel();
+			App->GetModuleRenderExercise()->LoadModel(event.drop.file);
 
-			model->Clear();
-			model->Load(event.drop.file);
 
+			const Model* model = App->GetModuleRenderExercise()->GetModel();
 			float3 maxpos = model->GetMaxPos();
 			float3 minpos = model->GetMinPos();
 			App->GetCamera()->FocusGeometry(maxpos, minpos);
-
-			
 
 			break;
 		}
@@ -198,7 +197,7 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
-KeyState ModuleInput::GetKey(int id) const
+const KeyState ModuleInput::GetKey(int id) const
 {
 	//if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
 		return keyboard[id];
@@ -206,7 +205,7 @@ KeyState ModuleInput::GetKey(int id) const
 		//return KEY_IDLE;
 }
 
-KeyState ModuleInput::GetMouseButtonDown(int id) const
+const KeyState ModuleInput::GetMouseButtonDown(int id) const
 {
 	if (!App->GetEditor()->GetIO()->WantCaptureMouse)
 		return mouse_buttons[id - 1];

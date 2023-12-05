@@ -10,7 +10,7 @@
 
 ModuleCamera::ModuleCamera()
 {
-	
+	frustum = new Frustum;
 }
 
 ModuleCamera::~ModuleCamera()
@@ -215,7 +215,7 @@ void ModuleCamera::CameraZoom() {
 }
 
 
-void ModuleCamera::FocusGeometry(float3 maxPos, float3 minPos) {
+void ModuleCamera::FocusGeometry(const float3 &maxPos, const float3 &minPos) {
 	float max = maxPos.MaxElement();
 	float height = (maxPos[1] + minPos[1])/2.0f;
 	SetPosition(0, height, -1);
@@ -227,7 +227,7 @@ void ModuleCamera::FocusGeometry(float3 maxPos, float3 minPos) {
 
 
 
-void ModuleCamera::CameraOrbit(float3 maxPos, float3 minPos) {
+void ModuleCamera::CameraOrbit(const float3 &maxPos, const float3 &minPos) {
 
 	float max = maxPos.MaxElement();
 	float height = maxPos[1] - minPos[1];

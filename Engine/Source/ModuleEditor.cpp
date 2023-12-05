@@ -10,7 +10,7 @@
 #include "SDL.h"
 #include "Model.h"
 #include <.\GL\glew.h>
-
+#include "imgui.h"
 #include "MathGeoLib.h"
 
 
@@ -22,13 +22,11 @@
 #include "tiny_gltf.h"
 
 ModuleEditor::ModuleEditor() {
-	context = nullptr;
-	fullScreen = false;
-	resizable = true;
+	logs = new ImGuiTextBuffer;
 
 }
 ModuleEditor::~ModuleEditor() {
-
+	delete logs;
 }
 
 bool ModuleEditor::Init()
@@ -184,13 +182,13 @@ update_status ModuleEditor::Update() {
 		{
 			if (ImGui::TreeNode("Geometry"))
 			{
-				const std::vector<Mesh>* meshes = App->GetModuleRenderExercise()->GetModel()->GetMeshes();
+				const std::vector<Mesh*>* meshes = App->GetModuleRenderExercise()->GetModel()->GetMeshes();
 				for (int i = 0; i < meshes->size(); i++) {
 					ImGui::Separator();
-					ImGui::Text("Mesh name: %s", meshes->at(i).GetName().c_str());
-					ImGui::Text("Indices: %i", meshes->at(i).GetIndexCount());
-					ImGui::Text("Vertices: %i", meshes->at(i).GetVertexCount());
-					ImGui::Text("Triangles: %i", meshes->at(i).GetIndexCount() / 3);
+					ImGui::Text("Mesh name: %s", meshes->at(i)->GetName()->c_str());
+					ImGui::Text("Indices: %i", meshes->at(i)->GetIndexCount());
+					ImGui::Text("Vertices: %i", meshes->at(i)->GetVertexCount());
+					ImGui::Text("Triangles: %i", meshes->at(i)->GetIndexCount() / 3);
 				}
 
 				ImGui::TreePop();
@@ -261,7 +259,7 @@ update_status ModuleEditor::Update() {
 		ImGui::Separator();
 		ImGui::BeginChild("##ConsolePanel");
 
-		ImGui::TextUnformatted(logs.begin(), logs.end());
+		ImGui::TextUnformatted(logs->begin(), logs->end());
 
 		if (autoscroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
 			ImGui::SetScrollHereY(1.0f);
@@ -297,7 +295,7 @@ update_status ModuleEditor::Update() {
 
 
 void ModuleEditor::AddLog(char str[]) {
-	logs.appendf(str);
+	logs->appendf(str);
 }
 
 bool ModuleEditor::CleanUp() {

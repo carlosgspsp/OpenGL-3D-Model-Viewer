@@ -28,8 +28,8 @@ public:
 	void CameraRotation();
 	void CameraPan();
 	void CameraZoom();
-	void CameraOrbit(float3 maxPos, float3 minPos);
-	void FocusGeometry(float3 maxPos, float3 minPos);
+	void CameraOrbit(const float3 &maxPos, const float3 &minPos);
+	void FocusGeometry(const float3 &maxPos, const float3 &minPos);
 	const float3* GetPosition() const { return &frustum->pos; };
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
@@ -42,7 +42,7 @@ private:
 	float verticalPan = 0, horizontalPan = 0;
 	float2 mouseSensitivity = float2::zero, panSensitivity = float2::zero;
 	float zoomSensitivity = 0;
-	Frustum* frustum = new Frustum();
+	Frustum* frustum = nullptr;
 	float4x4 camera_matrix = float4x4::zero;
 };
 

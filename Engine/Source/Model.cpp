@@ -6,16 +6,20 @@
 #include <.\GL\glew.h>
 
 Model::Model() {
-
+	srcModel = new tinygltf::Model;
 }
 
 Model::~Model() {
+
+	delete srcModel;
+
 	for (int i = 0; i < scrImages.size(); i++) {
 		delete scrImages[i];
 	}
 
 	for (int i = 0; i < meshes.size(); i++) {
-		meshes[i].DestroyBuffers();
+		meshes[i]->DestroyBuffers();
+		delete meshes[i];
 	}
 
 	for (int i = 0; i < textures.size(); i++) {
@@ -29,7 +33,7 @@ void Model::Load(const char* assetFileName) {
 
 	maxPos = float3::zero;
 
-	bool loadOk = gltfContext.LoadASCIIFromFile(&srcModel , &error, &warning, assetFileName);
+	bool loadOk = gltfContext.LoadASCIIFromFile(srcModel , &error, &warning, assetFileName);
 
 	if (!loadOk) {
 		LOG("Error loading s%: s%", assetFileName, error.c_str());
@@ -45,14 +49,14 @@ void Model::Load(const char* assetFileName) {
 				filePath.erase(pos + 1, filePath.size() - 1);
 			}
 		}
-		for (const auto& srcMesh : srcModel.meshes) {
+		for (const auto& srcMesh : srcModel->meshes) {
 			for (const auto& primitive : srcMesh.primitives) {
 				Mesh* mesh = new Mesh;
-				mesh->Load(srcModel, srcMesh, primitive);
+				mesh->Load(*srcModel, srcMesh, primitive);
 				
 				const auto& itPos = primitive.attributes.find("POSITION");
 				if (itPos != primitive.attributes.end()) {
-					const tinygltf::Accessor& posAcc = srcModel.accessors[itPos->second];
+					const tinygltf::Accessor& posAcc = srcModel->accessors[itPos->second];
 					
 					if (posAcc.maxValues[0] > maxPos.x) {
 						maxPos.x = posAcc.maxValues[0];
@@ -77,7 +81,7 @@ void Model::Load(const char* assetFileName) {
 
 				}
 
-				meshes.push_back(*mesh);
+				meshes.push_back(mesh);
 			}
 		}
 		LoadMaterials();
@@ -85,11 +89,11 @@ void Model::Load(const char* assetFileName) {
 }
 
 void Model::LoadMaterials() {
-	for (const auto& srcMaterial : srcModel.materials) {
+	for (const auto& srcMaterial : srcModel->materials) {
 		unsigned int textureId = 0;
 		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0) {
-			const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
-			const tinygltf::Image& image = srcModel.images[texture.source];
+			const tinygltf::Texture& texture = srcModel->textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
+			const tinygltf::Image& image = srcModel->images[texture.source];
 			
 
 			std::string path = filePath + image.uri;
@@ -108,7 +112,7 @@ void Model::LoadMaterials() {
 
 void Model::DrawModel(unsigned program_id) {
 	for (unsigned int i = 0; i < meshes.size(); i++) {
-		meshes.at(i).Draw(textures, program_id);
+		meshes.at(i)->Draw(textures, program_id);
 	}
 }
 
@@ -119,7 +123,8 @@ void Model::Clear() {
 		glDeleteTextures(1, &textures[i]);
 	}
 	textures.clear();
-	srcModel = tinygltf::Model();
+	delete srcModel;
+	srcModel = new tinygltf::Model();
 
 	for (int i = 0; i < scrImages.size(); i++) {
 		delete scrImages[i];
@@ -127,7 +132,8 @@ void Model::Clear() {
 	scrImages.clear();
 
 	for (int i = 0; i < meshes.size(); i++) {
-		meshes[i].DestroyBuffers();
+		meshes[i]->DestroyBuffers();
+		delete meshes[i];
 	}
 	meshes.clear();
 		

@@ -17,9 +17,9 @@ public:
 	update_status Update();
 	//update_status PostUpdate();
 	bool CleanUp();
-
-	Model* GetModel() const;
-
+	void ClearModel();
+	inline const Model* GetModel() const { return model; } 
+	void LoadModel(char* file);
 
 private:
 	

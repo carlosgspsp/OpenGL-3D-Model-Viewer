@@ -39,8 +39,6 @@ static void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint 
 
 ModuleOpenGL::ModuleOpenGL()
 {
-	context = nullptr;
-
 
 }
 

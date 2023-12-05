@@ -217,8 +217,7 @@ void ModuleCamera::CameraZoom() {
 
 void ModuleCamera::FocusGeometry(float3 maxPos, float3 minPos) {
 	float max = maxPos.MaxElement();
-	float height = maxPos[1] - minPos[1];
-	height *= 0.5;
+	float height = (maxPos[1] + minPos[1])/2.0f;
 	SetPosition(0, height, -1);
 	LookAt(float3(0,height,0));
 	SetPosition(0, height, -max * 3.5f);

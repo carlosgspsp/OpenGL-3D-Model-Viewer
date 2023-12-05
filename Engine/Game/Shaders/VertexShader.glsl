@@ -1,15 +1,20 @@
 #version 460
 layout(location=0) in vec3 my_vertex_position;
 layout(location=1) in vec2 vertex_uv0;
+layout(location=2) in vec3 normal;
 
 layout(location = 0) uniform mat4 model;
 layout(location = 1) uniform mat4 view;
 layout(location = 2) uniform mat4 proj;
 
+out vec3 surface_normal;
+out vec3 surface_position;
 out vec2 uv0;
 
 void main()
 {
+	surface_normal = transpose(inverse(mat3(model))) * normal;
+	surface_position = (model*vec4(my_vertex_position,1.0)).xyz;
 	gl_Position = proj*view*model*vec4(my_vertex_position, 1.0);
 	uv0 = vertex_uv0;
 }

@@ -26,7 +26,7 @@ bool ModuleCamera::Init()
 
 	frustum->type = FrustumType::PerspectiveFrustum;
 	frustum->pos = float3(0.0f, 0.25f, 0.5f);
-	frustum->nearPlaneDistance = 0.1f;
+	frustum->nearPlaneDistance = 0.01f;
 	frustum->farPlaneDistance = 1000.0f;
 	frustum->verticalFov = math::pi / 4.0f;
 	frustum->horizontalFov = 2.0f * atanf(tanf(frustum->verticalFov * 0.5f) * screenSize.x / screenSize.y);

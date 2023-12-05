@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "MathGeoLib.h"
 #include "SDL.h"
+#include "ModuleCamera.h"
 
 
 
@@ -97,6 +98,34 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 
 	}
 
+
+	if (itNormal != primitive.attributes.end()) {
+		const tinygltf::Accessor& normalAcc = srcModel.accessors[itNormal->second];
+		SDL_assert(normalAcc.type == TINYGLTF_TYPE_VEC3);
+		SDL_assert(normalAcc.componentType == GL_FLOAT);
+		const tinygltf::BufferView& normalView = srcModel.bufferViews[normalAcc.bufferView];
+		const tinygltf::Buffer& normalBuffer = srcModel.buffers[normalView.buffer];
+		const unsigned char* bufferNormal = &(normalBuffer.data[normalAcc.byteOffset + normalView.byteOffset]);
+
+
+		float3* ptr = reinterpret_cast<float3*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY)) + sizeof(float) * 5 * vertexCount);
+		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+(sizeof(float)*3*vertexCount)/sizeof(float2); //This does not work because the division should encapsulate everything
+
+
+		for (size_t i = 0; i < normalAcc.count; i++) {
+			ptr[i] = *reinterpret_cast<const float3*>(bufferNormal);
+			if (normalView.byteStride != 0) {
+				bufferNormal += normalView.byteStride;
+			}
+			else {
+				bufferNormal += sizeof(float) * 3;
+			}
+
+		}
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+
+	}
+
 }
 
 void Mesh::LoadEBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
@@ -152,6 +181,9 @@ void Mesh::CreateVAO() {
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
 
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 5 * vertexCount));
+
 	glBindVertexArray(0);
 }
 
@@ -162,8 +194,17 @@ void Mesh::Draw(const std::vector<unsigned>& textures, unsigned program_id) {
 	if (textures.size() > 0) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textures[textureID]);
-		glUniform1i(glGetUniformLocation(program_id, "mytexture"), 0);
+		glUniform1i(glGetUniformLocation(program_id, "diffuse_texture"), 0);
 	}
+
+	glUniform1f(glGetUniformLocation(program_id, "diffuse_constant"), 0.640f);
+	glUniform1f(glGetUniformLocation(program_id, "specular_constant"), 0.550f);
+	glUniform1f(glGetUniformLocation(program_id, "n"), 29.25f);
+
+	glUniform3f(glGetUniformLocation(program_id, "light_color"), 0.992f, 0.857f, 0.510f);
+	glUniform3f(glGetUniformLocation(program_id, "light_direction"), -0.800f, 8.100f, -6.700);
+	glUniform3f(glGetUniformLocation(program_id, "ambient_color"), 0.802f, 0.739f, 0.739f);
+	glUniform3f(glGetUniformLocation(program_id, "camera_position"), App->GetCamera()->GetPosition()->x, App->GetCamera()->GetPosition()->y, App->GetCamera()->GetPosition()->z);
 
 	if (indexCount > 0) {
 		glBindVertexArray(VAO);

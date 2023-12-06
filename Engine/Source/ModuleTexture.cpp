@@ -24,7 +24,7 @@ void  ModuleTexture::LoadTextureFile(DirectX::ScratchImage& scrImage, const wcha
 			hr = DirectX::LoadFromWICFile(texture_file_name, DirectX::WIC_FLAGS_NONE, nullptr, scrImage);
 
 			if (FAILED(hr)) {
-				assert(false && "File extension not supported");
+				LOG("\nLOADING TEXTURE FILE: File extension not supported.");
 			}
 		}
 	}

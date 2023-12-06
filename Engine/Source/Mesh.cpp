@@ -12,8 +12,9 @@ void Mesh::Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, 
 	textureID = primitive.material;
 	LoadVBO(srcModel, srcMesh, primitive);
 	LoadEBO(srcModel, srcMesh, primitive);
-	CreateVAO();
-	//CreateProgram();
+	if (indexCount != 0) {
+		CreateVAO();
+	}
 }
 
 void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
@@ -107,8 +108,14 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		const tinygltf::Buffer& normalBuffer = srcModel.buffers[normalView.buffer];
 		const unsigned char* bufferNormal = &(normalBuffer.data[normalAcc.byteOffset + normalView.byteOffset]);
 
-
-		float3* ptr = reinterpret_cast<float3*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY)) + sizeof(float) * 5 * vertexCount);
+		float3* ptr = nullptr;
+		if (itTexCoord != primitive.attributes.end()) {
+			ptr = reinterpret_cast<float3*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY)) + sizeof(float) * 5 * vertexCount);
+		}
+		else {
+			ptr = reinterpret_cast<float3*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY)) + sizeof(float) * 3 * vertexCount);
+		}
+		
 		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY))+(sizeof(float)*3*vertexCount)/sizeof(float2); //This does not work because the division should encapsulate everything
 
 
@@ -228,6 +235,9 @@ void Mesh::Draw(const std::vector<unsigned>& textures, unsigned program_id) {
 
 void Mesh::DestroyBuffers() {
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteBuffers(1, &VAO);
+	if (indexCount != 0) {
+		glDeleteBuffers(1, &EBO);
+		glDeleteBuffers(1, &VAO);
+	}
+	
 }

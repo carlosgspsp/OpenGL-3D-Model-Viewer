@@ -122,12 +122,8 @@ update_status ModuleInput::PreUpdate()
 			App->GetModuleRenderExercise()->ClearModel();
 			App->GetModuleRenderExercise()->LoadModel(event.drop.file);
 
-
 			const Model* model = App->GetModuleRenderExercise()->GetModel();
-			float3 maxpos = model->GetMaxPos();
-			float3 minpos = model->GetMinPos();
-			App->GetCamera()->FocusGeometry(maxpos, minpos);
-
+			App->GetCamera()->FocusGeometry(*model);
 			break;
 		}
 	}
@@ -200,9 +196,9 @@ bool ModuleInput::CleanUp()
 const KeyState ModuleInput::GetKey(int id) const
 {
 	//if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
-		return keyboard[id];
+	return keyboard[id];
 	//else
-		//return KEY_IDLE;
+	//return KEY_IDLE;
 }
 
 const KeyState ModuleInput::GetMouseButtonDown(int id) const
@@ -213,21 +209,6 @@ const KeyState ModuleInput::GetMouseButtonDown(int id) const
 		return KEY_IDLE;
 }
 
-const float2& ModuleInput::GetMousePosition() const
-{
-	return mouse;
-}
-
-const float2& ModuleInput::GetLastMousePosition() const
-{
-	return last_mouse_position;
-}
-
-const float2& ModuleInput::GetMouseMotion() const
-{
-	return mouse_motion;
-}
-
 const float2& ModuleInput::GetMouseWheel() const
 {
 	if (!App->GetEditor()->GetIO()->WantCaptureMouse)
@@ -235,3 +216,4 @@ const float2& ModuleInput::GetMouseWheel() const
 	else
 		return float2(0.0f, 0.0f);
 }
+

@@ -34,6 +34,6 @@ private:
 	std::vector<unsigned> textures;
 	std::vector<Mesh*> meshes;
 	std::string filePath = "";
-	float3 minPos = float3::zero, maxPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+	float3 maxPos = float3::zero, minPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
 };
 

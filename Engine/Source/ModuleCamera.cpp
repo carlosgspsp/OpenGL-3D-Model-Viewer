@@ -126,14 +126,14 @@ void ModuleCamera::ManageKeyboardInput() {
 		frustum->pos -= float3::unitY * cameraSpeed;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
-		FocusGeometry(App->GetModuleRenderExercise()->GetModel()->GetMaxPos(), App->GetModuleRenderExercise()->GetModel()->GetMinPos());
+		FocusGeometry(*App->GetModuleRenderExercise()->GetModel());
 	}
 
 }
 
 void ModuleCamera::ManageMouseInput() {
 	if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-		CameraOrbit(App->GetModuleRenderExercise()->GetModel()->GetMaxPos(), App->GetModuleRenderExercise()->GetModel()->GetMinPos());
+		CameraOrbit(*App->GetModuleRenderExercise()->GetModel());
 	}
 	else if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
 		CameraRotation();
@@ -215,19 +215,24 @@ void ModuleCamera::CameraZoom() {
 }
 
 
-void ModuleCamera::FocusGeometry(const float3 &maxPos, const float3 &minPos) {
+void ModuleCamera::FocusGeometry(const Model& model) {
+
+	float3 maxPos = model.GetMaxPos();
+	float3 minPos = model.GetMinPos();
 	float max = maxPos.MaxElement();
-	float height = (maxPos[1] + minPos[1])/2.0f;
+	float height = (maxPos[1] + minPos[1]) / 2.0f;
 	SetPosition(0, height, -1);
-	LookAt(float3(0,height,0));
+	LookAt(float3(0, height, 0));
 	SetPosition(0, height, -max * 3.5f);
 
-	
+
 }
 
 
+void ModuleCamera::CameraOrbit(const Model& model) {
 
-void ModuleCamera::CameraOrbit(const float3 &maxPos, const float3 &minPos) {
+	float3 maxPos = model.GetMaxPos();
+	float3 minPos = model.GetMinPos();
 
 	float max = maxPos.MaxElement();
 	float height = maxPos[1] - minPos[1];

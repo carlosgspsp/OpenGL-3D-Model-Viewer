@@ -31,12 +31,12 @@ void Model::Load(const char* assetFileName) {
 	tinygltf::TinyGLTF gltfContext;
 	std::string error, warning;
 
-	maxPos = float3::zero;
+	//maxPos = float3::zero;
 
 	bool loadOk = gltfContext.LoadASCIIFromFile(srcModel , &error, &warning, assetFileName);
 
 	if (!loadOk) {
-		LOG("Error loading s%: s%", assetFileName, error.c_str());
+		LOG("Error loading %s: %s", assetFileName, error.c_str());
 	}
 	else {
 		filePath = assetFileName;
@@ -77,8 +77,6 @@ void Model::Load(const char* assetFileName) {
 					if (posAcc.minValues[2] < minPos.z) {
 						minPos.z = posAcc.minValues[2];
 					}
-
-
 				}
 
 				meshes.push_back(mesh);
@@ -138,4 +136,6 @@ void Model::Clear() {
 	meshes.clear();
 		
 	filePath = "";
+	minPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+	maxPos = float3::zero;
 }

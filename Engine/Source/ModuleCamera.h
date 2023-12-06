@@ -5,6 +5,8 @@
 #include <Math/float4x4.h>
 #include <Geometry/Frustum.h>
 
+class Model;
+
 class ModuleCamera :
     public Module
 {
@@ -28,8 +30,8 @@ public:
 	void CameraRotation();
 	void CameraPan();
 	void CameraZoom();
-	void CameraOrbit(const float3 &maxPos, const float3 &minPos);
-	void FocusGeometry(const float3 &maxPos, const float3 &minPos);
+	void CameraOrbit(const Model& model);
+	void FocusGeometry(const Model& model);
 	const float3* GetPosition() const { return &frustum->pos; };
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();

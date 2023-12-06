@@ -30,9 +30,9 @@ bool ModuleRenderExercise::Init() {
 	char* vertex_shader_source = program.LoadShaderSource(vertex_shader_file);
 	char* fragment_shader_source = program.LoadShaderSource(fragment_shader_file);
 
-	LOG("VERTEX");
+	LOG("\n\nVERTEX\n");
 	LOG(vertex_shader_source);
-	LOG("FRAGMENT");
+	LOG("\n\nFRAGMENT\n");
 	LOG(fragment_shader_source);
 
 	unsigned vertex_shader_id = program.CompileShader(GL_VERTEX_SHADER, vertex_shader_source);
@@ -41,13 +41,13 @@ bool ModuleRenderExercise::Init() {
 
 	
 
-	//model.Load("./Models/TriangleWithoutIndices/TriangleWithoutIndices.gltf");
-	//model.Load("./Models/Triangle/Triangle.gltf");
-	//model.Load("./Models/BoxInterleaved/BoxInterleaved.gltf");
-	//model.Load("./Models/Box/Box.gltf");
-	//model.Load("./Models/BoxTextured/BoxTextured.gltf");
+	//model->Load("./Models/TriangleWithoutIndices/TriangleWithoutIndices.gltf");
+	//model->Load("./Models/Triangle/Triangle.gltf");
+	//model->Load("./Models/BoxInterleaved/BoxInterleaved.gltf");
+	//model->Load("./Models/Box/Box.gltf");
+	//model->Load("./Models/BoxTextured/BoxTextured.gltf");
 	model->Load("./Models/BakerHouse/BakerHouse.gltf");
-	//model.Load("./Models/Duck/Duck.gltf");
+	//model->Load("./Models/Duck/Duck.gltf");
 	
 	camera = App->GetCamera();
 

@@ -28,11 +28,12 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+	
+	inline const float2& GetMouseMotion() const { return mouse_motion; }
+	inline const float2& GetMousePosition() const {	return mouse; }
+	inline const float2& GetLastMousePosition() const{	return last_mouse_position; }
 	const KeyState GetKey(int id) const;
 	const KeyState GetMouseButtonDown(int id) const;
-	const float2& GetMouseMotion() const;
-	const float2& GetMousePosition() const;
-	const float2& GetLastMousePosition() const;
 	const float2& GetMouseWheel() const;
 
 private:

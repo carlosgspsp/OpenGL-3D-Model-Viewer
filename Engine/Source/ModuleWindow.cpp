@@ -26,20 +26,11 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
-
-		//screenSize.x = SCREEN_WIDTH;
-		//screenSize.y = SCREEN_HEIGHT;
-
-		
-
 		SDL_DisplayMode DM;
 		SDL_GetCurrentDisplayMode(0, &DM);
 
 		screenSize.x = DM.w / 2.0f;
 		screenSize.y = DM.h / 2.0f;
-		//int width = SCREEN_WIDTH;
-		//int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE ; // ||SDL_WINDOW_INPUT_GRABBED este para que no se salga el raton
 
 		if(FULLSCREEN == true)
@@ -56,7 +47,6 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}

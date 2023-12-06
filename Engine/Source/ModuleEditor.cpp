@@ -257,7 +257,7 @@ update_status ModuleEditor::Update() {
 
 		ImGui::Checkbox("AutoScroll", &autoscroll);
 		ImGui::Separator();
-		ImGui::BeginChild("##ConsolePanel");
+		ImGui::BeginChild("##ConsolePanel", ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), true, ImGuiWindowFlags_HorizontalScrollbar);
 
 		ImGui::TextUnformatted(logs->begin(), logs->end());
 

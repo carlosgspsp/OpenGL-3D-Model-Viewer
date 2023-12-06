@@ -36,6 +36,15 @@ public:
 	float4x4 GetProjectionMatrix();
 	float4x4 GetViewMatrix();
 
+	inline const float GetCameraSpeed() const { return cameraSpeed; }
+	inline const float2 GetMouseSensitivity() const { return mouseSensitivity; }
+	inline const float GetZoomSensitivity() const { return zoomSensitivity; }
+	inline const float2 GetPanSensitivity() const { return panSensitivity; }
+
+	inline void SetCameraSpeed(float newCameraSpeed) { cameraSpeed = newCameraSpeed; }
+	inline void SetMouseSensitivity(const float2 &newMouseSensitivity) { mouseSensitivity = newMouseSensitivity; }
+	inline void SetZoomSensitivity(float newZoomSensitivity) { zoomSensitivity = newZoomSensitivity; }
+	inline void SetPanSensitivity(float2 newPanSensitivity) { panSensitivity = newPanSensitivity; }
 
 private:
 	float cameraSpeed = 0;

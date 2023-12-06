@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-
+#include "Math/float2.h"
 
 struct ImGuiIO;
 class ImGuiTextBuffer;
@@ -26,7 +26,10 @@ class ModuleEditor : public Module
 		bool fullScreen = false, resizable = true;
 		int width = 0, height = 0;
 		const ImGuiIO* GetIO() const { return io; };
-		
+		float cameraSpeed = 0;
+		float2 panSensitivity = float2::zero;
+		float2 mouseSensitivity = float2::zero;
+		float zoomSensitivity = 0;
 
 	private:
 		ImGuiIO *io = nullptr;

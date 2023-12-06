@@ -41,10 +41,10 @@ bool ModuleCamera::Init()
 
 	mouseSensitivity = float2(0.1f, 0.1f);
 	panSensitivity = float2(0.005f, 0.005f);
-	zoomSensitivity = 0.1f;
+	zoomSensitivity = 1.4f;
 	yaw = -90.0f;
 	pitch = -RadToDeg(float3(0.0, 0.0, 1.0).AngleBetween(frustum->pos));
-
+	cameraSpeed = 0.1f;
 	verticalPan = 0.0f;
 	horizontalPan = 0.0f;
 
@@ -104,26 +104,29 @@ void ModuleCamera::SetPosition(float x, float y, float z) {
 }
 
 void ModuleCamera::ManageKeyboardInput() {
-	if (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+	if (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN) {
 		cameraSpeed *= 2.0f;
 	}
+	if (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP) {
+		cameraSpeed /= 2.0f;
+	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		frustum->pos += frustum->front * cameraSpeed;
+		frustum->pos += frustum->front * cameraSpeed * deltaTime;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		frustum->pos -= frustum->front * cameraSpeed;
+		frustum->pos -= frustum->front * cameraSpeed * deltaTime;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		frustum->pos -= frustum->WorldRight() * cameraSpeed;
+		frustum->pos -= frustum->WorldRight() * cameraSpeed * deltaTime;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		frustum->pos += frustum->WorldRight() * cameraSpeed;
+		frustum->pos += frustum->WorldRight() * cameraSpeed * deltaTime;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-		frustum->pos += float3::unitY * cameraSpeed;
+		frustum->pos += float3::unitY * cameraSpeed * deltaTime;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-		frustum->pos -= float3::unitY * cameraSpeed;
+		frustum->pos -= float3::unitY * cameraSpeed * deltaTime;
 	}
 	if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
 		FocusGeometry(*App->GetModuleRenderExercise()->GetModel());
@@ -211,7 +214,7 @@ void ModuleCamera::CameraPan() {
 
 void ModuleCamera::CameraZoom() {
 	float2 mouseWheel = App->GetInput()->GetMouseWheel();
-	frustum->pos += frustum->front * zoomSensitivity * mouseWheel.y;
+	frustum->pos += frustum->front * zoomSensitivity * mouseWheel.y/10.0f;
 }
 
 
@@ -276,9 +279,8 @@ void ModuleCamera::CameraOrbit(const Model& model) {
 update_status ModuleCamera::PreUpdate()
 {
 	float currentFrame = SDL_GetTicks();
-	deltaTime = currentFrame - lastFrame;
+	deltaTime = (currentFrame - lastFrame)/100.0f;
 	lastFrame = currentFrame;
-	cameraSpeed = 0.1f * deltaTime / 10;
 	return UPDATE_CONTINUE;
 }
 

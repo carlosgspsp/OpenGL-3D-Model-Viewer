@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
+#include "ModuleCamera.h"
 #include "ModuleRenderExercise.h"
 #include "DirectXTex/DirectXTex.h"
 #include "SDL.h"
@@ -48,6 +49,10 @@ bool ModuleEditor::Init()
 	width = App->GetWindow()->GetScreenSize().x;
 	height = App->GetWindow()->GetScreenSize().y;
 
+	cameraSpeed = App->GetCamera()->GetCameraSpeed();
+	panSensitivity = App->GetCamera()->GetPanSensitivity();
+	mouseSensitivity = App->GetCamera()->GetMouseSensitivity();
+	zoomSensitivity = App->GetCamera()->GetZoomSensitivity();
 
 	return true;
 }
@@ -171,6 +176,22 @@ update_status ModuleEditor::Update() {
 
 					
 				}
+				if (ImGui::CollapsingHeader("Camera")) {
+					//ImGui::InputText("input text", str0, IM_ARRAYSIZE(str0));
+					if (ImGui::InputFloat("Camera Speed", &cameraSpeed, 0.05f, 2.0f)) {
+						App->GetCamera()->SetCameraSpeed(cameraSpeed);
+					}
+					if (ImGui::InputFloat("Zoom Sensitivity", &zoomSensitivity, 0.05f, 2.0f)) {
+						App->GetCamera()->SetZoomSensitivity(zoomSensitivity);
+					}
+					if (ImGui::InputFloat2("Camera Rotation Sensitivity", mouseSensitivity.ptr())) {
+						App->GetCamera()->SetMouseSensitivity(mouseSensitivity);
+					}
+					if (ImGui::InputFloat2("Pan Sensitivity", panSensitivity.ptr())) {
+						App->GetCamera()->SetMouseSensitivity(panSensitivity);
+					}
+				}
+
 
 				ImGui::TreePop();
 			}

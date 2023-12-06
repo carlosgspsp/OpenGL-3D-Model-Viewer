@@ -126,9 +126,10 @@ update_status ModuleInput::PreUpdate()
 			App->GetCamera()->FocusGeometry(*model);
 			break;
 		}
+		ImGui_ImplSDL2_ProcessEvent(&event);
 	}
 
-	ImGui_ImplSDL2_ProcessEvent(&event);
+	
 
 	//if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		//return UPDATE_STOP;
@@ -195,10 +196,10 @@ bool ModuleInput::CleanUp()
 
 const KeyState ModuleInput::GetKey(int id) const
 {
-	//if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
+	if (!App->GetEditor()->GetIO()->WantCaptureKeyboard)
 	return keyboard[id];
-	//else
-	//return KEY_IDLE;
+	else
+	return KEY_IDLE;
 }
 
 const KeyState ModuleInput::GetMouseButtonDown(int id) const

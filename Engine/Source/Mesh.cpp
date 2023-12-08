@@ -248,5 +248,4 @@ void Mesh::DestroyBuffers() {
 		glDeleteBuffers(1, &EBO);
 		glDeleteBuffers(1, &VAO);
 	}
-	
 }

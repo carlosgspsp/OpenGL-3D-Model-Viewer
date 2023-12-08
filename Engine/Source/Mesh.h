@@ -13,6 +13,7 @@ namespace tinygltf
 	class Primitive;	
 }
 
+
 class Mesh
 {
 private:

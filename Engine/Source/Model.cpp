@@ -9,14 +9,13 @@
 Model::Model() {
 	srcModel = new tinygltf::Model;
 	modelAABB = new AABB;
-	modelAABB->maxPoint = float3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	modelAABB->minPoint = float3(FLT_MAX, FLT_MAX, FLT_MAX);
-	
+	modelAABB->SetNegativeInfinity();
 }
 
 Model::~Model() {
 
 	delete srcModel;
+	delete modelAABB;
 
 	for (int i = 0; i < scrImages.size(); i++) {
 		delete scrImages[i];
@@ -31,7 +30,7 @@ Model::~Model() {
 		glDeleteTextures(1, &textures[i]);
 	}
 
-	delete modelAABB;
+	
 }
 
 void Model::Load(const char* assetFileName) {
@@ -120,7 +119,5 @@ void Model::Clear() {
 		
 	filePath = "";
 
-	modelAABB->maxPoint = float3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	modelAABB->minPoint = float3(FLT_MAX, FLT_MAX, FLT_MAX);
-
+	modelAABB->SetNegativeInfinity();
 }

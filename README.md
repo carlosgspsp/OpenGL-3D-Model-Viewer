@@ -1,7 +1,7 @@
 # GameEngine
 This project is Game Engine made  for UPC videogames Master´s Degree
 
-- [GamebEngine Github Repository](https://github.com/carlosgspsp/GameEngine)
+- [Game Engine Github Repository](https://github.com/carlosgspsp/GameEngine)
 
 ## Installation
 

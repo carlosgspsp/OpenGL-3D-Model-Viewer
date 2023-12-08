@@ -4,13 +4,13 @@
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE 
 #include "tiny_gltf.h"
-
+#include "Geometry/AABB.h"
 
 namespace tinygltf
 {
 	class Model;
 	class Mesh;
-	class Primitive;
+	class Primitive;	
 }
 
 class Mesh
@@ -20,11 +20,15 @@ private:
 	int vertexCount = 0, indexCount = 0;
 	size_t posByteOffset = 0, posByteStride = 0, texByteOffset = 0, texByteStride = 0;
 	std::string name = "";
+	AABB* meshAABB;
 public:
 	
+	Mesh();
+	~Mesh();
 	inline const int GetIndexCount() const { return indexCount; }
 	inline const int GetVertexCount() const { return vertexCount; }
 	inline const std::string* GetName() const { return &name; }
+	inline const AABB* GetAABB() const { return meshAABB; }
 
 	void Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
 	void LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive);
@@ -32,5 +36,6 @@ public:
 	void CreateVAO();
 	void Draw(const std::vector<unsigned>& textures, unsigned program_id);
 	void DestroyBuffers();
+
 };
 

@@ -6,6 +6,7 @@
 #include "SDL.h"
 #include "Math/MathFunc.h"
 #include "Model.h"
+#include "Geometry/Sphere.h"
 
 
 ModuleCamera::ModuleCamera()
@@ -151,7 +152,6 @@ void ModuleCamera::ManageMouseInput() {
 }
 void ModuleCamera::CameraRotation() {
 
-
 	float2 mousePosition = App->GetInput()->GetMousePosition();
 	float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
 	float2 offset(lastMousePosition - mousePosition);
@@ -162,47 +162,20 @@ void ModuleCamera::CameraRotation() {
 	yaw = offset.x;
 	pitch = offset.y;
 
-	/*
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-	*/
 
 	float3 newfront, newup;
-	/*newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));
-	newfront.y = sinf(DegToRad(pitch));
-	newfront.z = sinf(DegToRad(yaw)) * cosf(DegToRad(pitch));
-	newfront.Normalize();
 
-	frustum->front = newfront.Normalized();
-	float3 right = frustum->front.Cross(float3::unitY).Normalized();
-	frustum->up = right.Cross(frustum->front).Normalized();
-	*/
-	
-	/*
-	float3x3 rotationX = float3x3::RotateAxisAngle(frustum->WorldRight(), DegToRad(pitch));
-	newfront = rotationX.MulDir(frustum->front.Normalized());
-	newup = rotationX.MulDir(frustum->up.Normalized());
-	frustum->front = newfront.Normalized();
-	frustum->up = newup.Normalized();
-	
-	float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(yaw));
-	newfront = rotationY.MulDir(frustum->front.Normalized());
-	newup = rotationY.MulDir(frustum->up.Normalized());
-	frustum->front = newfront.Normalized();
-	frustum->up = newup.Normalized();
-	*/
 	float3x3 rotationX = float3x3::RotateAxisAngle(frustum->WorldRight(), DegToRad(pitch));
 	float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(yaw));
 	float3x3 rotation = rotationY.Mul(rotationX);
-	//float3x3 rotation = rotationX * rotationY;
+
 	newfront = rotation.MulDir(frustum->front.Normalized());
 	newup = rotation.MulDir(frustum->up.Normalized());
 	frustum->front = newfront.Normalized();
 	frustum->up = newup.Normalized();
 	
 	}
+
 void ModuleCamera::CameraPan() {
 	float2 mousePosition = App->GetInput()->GetMousePosition();
 	float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
@@ -228,76 +201,41 @@ void ModuleCamera::CameraZoom() {
 
 void ModuleCamera::FocusGeometry(const Model& model) {
 
-	float3 maxPos = model.GetMaxPos();
-	float3 minPos = model.GetMinPos();
-	float max = maxPos.MaxElement();
-	float height = (maxPos[1] + minPos[1]) / 2.0f;
-	SetPosition(0, height, -1);
-	LookAt(float3(0, height, 0));
-	SetPosition(0, height, -max * 3.5f);
-
+	Sphere sphere = model.GetAABB()->MinimalEnclosingSphere();
+	float3 center = sphere.Centroid();
+	SetPosition(center.x, center.y, center.z-1);
+	LookAt(center);
+	SetPosition(center.x, center.y, center.z-(sphere.r * 3.5f));
 
 }
 
 
 void ModuleCamera::CameraOrbit(const Model& model) {
+	
+	Sphere sphere = model.GetAABB()->MinimalEnclosingSphere();
+	float radius = frustum->pos.Distance(sphere.Centroid());
+	frustum->pos = sphere.Centroid();
 
-	float3 maxPos = model.GetMaxPos();
-	float3 minPos = model.GetMinPos();
-
-	float max = maxPos.MaxElement();
-	float height = maxPos[1] - minPos[1];
-	height *= 0.5;
-	float3 center = (maxPos + minPos)/2.0f;
-
-	float radius = frustum->pos.Distance(center);
 	float2 mousePosition = App->GetInput()->GetMousePosition();
 	float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
 	float2 offset(lastMousePosition - mousePosition);
 
 	offset.x *= mouseSensitivity.x;
 	offset.y *= mouseSensitivity.y;
-
-	/*
-	yaw -= offset.x;
-	pitch += offset.y;
-
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-	
-
-	frustum->pos = center;
-
-	float3 newfront;
-	newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));
-	newfront.y = sinf(DegToRad(pitch));
-	newfront.z = sinf(DegToRad(yaw)) * cosf(DegToRad(pitch));
-	newfront.Normalize();
-
-	frustum->front = newfront;
-	float3 right = frustum->front.Cross(float3::unitY).Normalized();
-	frustum->up = right.Cross(frustum->front).Normalized();
-	*/
-
 	yaw = offset.x;
 	pitch = offset.y;
-
-	frustum->pos = center;
 
 	float3 newfront, newup;
 	float3x3 rotationX = float3x3::RotateAxisAngle(frustum->WorldRight(), DegToRad(pitch));
 	float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(yaw));
 	float3x3 rotation = rotationY.Mul(rotationX);
-	//float3x3 rotation = rotationX * rotationY;
+	
 	newfront = rotation.MulDir(frustum->front.Normalized());
 	newup = rotation.MulDir(frustum->up.Normalized());
 	frustum->front = newfront.Normalized();
 	frustum->up = newup.Normalized();
 
 	frustum->Translate(-frustum->front * radius);
-
 
 }
 update_status ModuleCamera::PreUpdate()
@@ -318,11 +256,11 @@ update_status ModuleCamera::Update()
 
 update_status ModuleCamera::PostUpdate()
 {
-
 	return UPDATE_CONTINUE;
 }
 
 
-bool ModuleCamera::CleanUp() {
+bool ModuleCamera::CleanUp() 
+{
 	return true;
 }

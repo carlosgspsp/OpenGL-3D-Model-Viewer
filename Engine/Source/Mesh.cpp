@@ -6,6 +6,12 @@
 #include "ModuleCamera.h"
 
 
+Mesh::Mesh() {
+	meshAABB = new AABB();
+}
+Mesh::~Mesh() {
+	delete meshAABB;
+}
 
 void Mesh::Load(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMesh, const tinygltf::Primitive& primitive) {
 	name = srcMesh.name;
@@ -45,6 +51,8 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 		const tinygltf::Buffer& posBuffer = srcModel.buffers[posView.buffer];
 		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
 
+		//meshAABB->SetFrom(reinterpret_cast<const float3*>(bufferPos), vertexCount);
+
 		posByteOffset = posView.byteOffset;
 		posByteStride = posView.byteStride;
 
@@ -64,6 +72,7 @@ void Mesh::LoadVBO(const tinygltf::Model& srcModel, const tinygltf::Mesh& srcMes
 			}
 			
 		}
+		meshAABB->SetFrom(ptr, vertexCount);
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
 	}

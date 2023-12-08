@@ -22,9 +22,7 @@ public:
 	inline const tinygltf::Model* GetSrcModel() const { return srcModel; }
 	inline const std::vector<Mesh*>* GetMeshes() const { return &meshes; } 
 	inline const std::vector<DirectX::ScratchImage*> GetScrImages() const { return scrImages; }
-	inline const float3 GetMaxPos() const { return maxPos; }
-	inline const float3 GetMinPos() const { return minPos; }
-
+	inline const AABB* GetAABB() const { return modelAABB; }
 	Model();
 	~Model();
 
@@ -34,6 +32,6 @@ private:
 	std::vector<unsigned> textures;
 	std::vector<Mesh*> meshes;
 	std::string filePath = "";
-	float3 maxPos = float3::zero, minPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+	AABB* modelAABB;
 };
 

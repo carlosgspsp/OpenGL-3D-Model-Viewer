@@ -4,9 +4,14 @@
 #include "Model.h"
 #include "DirectXTex/DirectXTex.h"
 #include <.\GL\glew.h>
+#include "Geometry/AABB.h"
 
 Model::Model() {
 	srcModel = new tinygltf::Model;
+	modelAABB = new AABB;
+	modelAABB->maxPoint = float3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	modelAABB->minPoint = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+	
 }
 
 Model::~Model() {
@@ -25,6 +30,8 @@ Model::~Model() {
 	for (int i = 0; i < textures.size(); i++) {
 		glDeleteTextures(1, &textures[i]);
 	}
+
+	delete modelAABB;
 }
 
 void Model::Load(const char* assetFileName) {
@@ -53,32 +60,8 @@ void Model::Load(const char* assetFileName) {
 			for (const auto& primitive : srcMesh.primitives) {
 				Mesh* mesh = new Mesh;
 				mesh->Load(*srcModel, srcMesh, primitive);
-				
+				modelAABB->Enclose(*mesh->GetAABB());
 				const auto& itPos = primitive.attributes.find("POSITION");
-				if (itPos != primitive.attributes.end()) {
-					const tinygltf::Accessor& posAcc = srcModel->accessors[itPos->second];
-					
-					if (posAcc.maxValues[0] > maxPos.x) {
-						maxPos.x = posAcc.maxValues[0];
-					}
-					if (posAcc.maxValues[1] > maxPos.y) {
-						maxPos.y = posAcc.maxValues[1];
-					}
-					if (posAcc.maxValues[2] > maxPos.z) {
-						maxPos.z = posAcc.maxValues[2];
-					}
-
-					if (posAcc.minValues[0] < minPos.x) {
-						minPos.x = posAcc.minValues[0];
-					}
-					if (posAcc.minValues[1] < minPos.y) {
-						minPos.y = posAcc.minValues[1];
-					}
-					if (posAcc.minValues[2] < minPos.z) {
-						minPos.z = posAcc.minValues[2];
-					}
-				}
-
 				meshes.push_back(mesh);
 			}
 		}
@@ -136,6 +119,8 @@ void Model::Clear() {
 	meshes.clear();
 		
 	filePath = "";
-	minPos = float3(FLT_MAX, FLT_MAX, FLT_MAX);
-	maxPos = float3::zero;
+
+	modelAABB->maxPoint = float3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	modelAABB->minPoint = float3(FLT_MAX, FLT_MAX, FLT_MAX);
+
 }

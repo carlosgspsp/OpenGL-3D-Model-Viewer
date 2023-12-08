@@ -159,42 +159,50 @@ void ModuleCamera::CameraRotation() {
 	offset.x *= mouseSensitivity.x;
 	offset.y *= mouseSensitivity.y;
 
-	yaw -= offset.x;
-	pitch += offset.y;
+	yaw = offset.x;
+	pitch = offset.y;
 
+	/*
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
+	*/
 
-
-	float3 newfront;
-	newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));
+	float3 newfront, newup;
+	/*newfront.x = cosf(DegToRad(yaw)) * cosf(DegToRad(pitch));
 	newfront.y = sinf(DegToRad(pitch));
 	newfront.z = sinf(DegToRad(yaw)) * cosf(DegToRad(pitch));
 	newfront.Normalize();
 
-	frustum->front = newfront;
+	frustum->front = newfront.Normalized();
 	float3 right = frustum->front.Cross(float3::unitY).Normalized();
 	frustum->up = right.Cross(frustum->front).Normalized();
-
-	/*float3x3 rotationDeltaMatrix(
-		float3(cosf(yaw)*cosf(pitch), -sinf(yaw), cosf(yaw)*sinf(pitch)),
-		float3(sinf(yaw)*cosf(pitch), cos(yaw), sinf(yaw)*sinf(pitch)),
-		float3(-sinf(pitch), 0.0f, cosf(pitch))
-	);
-
-
-	float3 oldFront = frustum->front.Normalized();
-	float3 oldUp = frustum->up.Normalized();
-
-	frustum->front = rotationDeltaMatrix.MulDir(oldFront);
-	frustum->up = rotationDeltaMatrix.MulDir(oldUp);*/
-
-
-
-
-}
+	*/
+	
+	/*
+	float3x3 rotationX = float3x3::RotateAxisAngle(frustum->WorldRight(), DegToRad(pitch));
+	newfront = rotationX.MulDir(frustum->front.Normalized());
+	newup = rotationX.MulDir(frustum->up.Normalized());
+	frustum->front = newfront.Normalized();
+	frustum->up = newup.Normalized();
+	
+	float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(yaw));
+	newfront = rotationY.MulDir(frustum->front.Normalized());
+	newup = rotationY.MulDir(frustum->up.Normalized());
+	frustum->front = newfront.Normalized();
+	frustum->up = newup.Normalized();
+	*/
+	float3x3 rotationX = float3x3::RotateAxisAngle(frustum->WorldRight(), DegToRad(pitch));
+	float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(yaw));
+	float3x3 rotation = rotationY.Mul(rotationX);
+	//float3x3 rotation = rotationX * rotationY;
+	newfront = rotation.MulDir(frustum->front.Normalized());
+	newup = rotation.MulDir(frustum->up.Normalized());
+	frustum->front = newfront.Normalized();
+	frustum->up = newup.Normalized();
+	
+	}
 void ModuleCamera::CameraPan() {
 	float2 mousePosition = App->GetInput()->GetMousePosition();
 	float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
@@ -250,6 +258,7 @@ void ModuleCamera::CameraOrbit(const Model& model) {
 	offset.x *= mouseSensitivity.x;
 	offset.y *= mouseSensitivity.y;
 
+	/*
 	yaw -= offset.x;
 	pitch += offset.y;
 
@@ -257,7 +266,7 @@ void ModuleCamera::CameraOrbit(const Model& model) {
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
-
+	
 
 	frustum->pos = center;
 
@@ -270,7 +279,22 @@ void ModuleCamera::CameraOrbit(const Model& model) {
 	frustum->front = newfront;
 	float3 right = frustum->front.Cross(float3::unitY).Normalized();
 	frustum->up = right.Cross(frustum->front).Normalized();
+	*/
 
+	yaw = offset.x;
+	pitch = offset.y;
+
+	frustum->pos = center;
+
+	float3 newfront, newup;
+	float3x3 rotationX = float3x3::RotateAxisAngle(frustum->WorldRight(), DegToRad(pitch));
+	float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(yaw));
+	float3x3 rotation = rotationY.Mul(rotationX);
+	//float3x3 rotation = rotationX * rotationY;
+	newfront = rotation.MulDir(frustum->front.Normalized());
+	newup = rotation.MulDir(frustum->up.Normalized());
+	frustum->front = newfront.Normalized();
+	frustum->up = newup.Normalized();
 
 	frustum->Translate(-frustum->front * radius);
 

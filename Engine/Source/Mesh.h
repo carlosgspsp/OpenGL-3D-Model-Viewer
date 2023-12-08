@@ -17,8 +17,7 @@ class Mesh
 {
 private:
 	unsigned VBO = 0, EBO = 0, VAO = 0, programID = 0, textureID = 0;
-	int vertexCount = 0, indexCount = 0;
-	size_t posByteOffset = 0, posByteStride = 0, texByteOffset = 0, texByteStride = 0;
+	int vertexCount = 0, indexCount = 0, textureCount = 0;
 	std::string name = "";
 	AABB* meshAABB;
 public:

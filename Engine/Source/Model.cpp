@@ -5,6 +5,7 @@
 #include "DirectXTex/DirectXTex.h"
 #include <.\GL\glew.h>
 #include "Geometry/AABB.h"
+#include "Mesh.h"
 
 Model::Model() {
 	srcModel = new tinygltf::Model;

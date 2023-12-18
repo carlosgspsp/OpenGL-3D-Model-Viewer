@@ -1,15 +1,18 @@
 #pragma once
 #include <vector>
-#include "Mesh.h"
 #include <Math/float3.h>
-
-
 
 namespace DirectX
 {
 	class ScratchImage;
 }
 
+namespace tinygltf
+{
+	class Model;
+}
+
+class Mesh;
 
 class Model
 {
@@ -20,7 +23,7 @@ public:
 	void Clear();
 
 	inline const tinygltf::Model* GetSrcModel() const { return srcModel; }
-	inline const std::vector<Mesh*>* GetMeshes() const { return &meshes; } 
+	inline const std::vector<Mesh*>* GetMeshes() const { return &meshes; }
 	inline const std::vector<DirectX::ScratchImage*> GetScrImages() const { return scrImages; }
 	inline const AABB* GetAABB() const { return modelAABB; }
 	Model();

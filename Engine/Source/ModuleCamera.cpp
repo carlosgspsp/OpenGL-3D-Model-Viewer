@@ -5,6 +5,7 @@
 #include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include "Math/MathFunc.h"
+#include "Geometry/AABB.h"
 #include "Model.h"
 #include "Geometry/Sphere.h"
 

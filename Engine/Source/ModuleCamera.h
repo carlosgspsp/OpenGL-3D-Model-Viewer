@@ -33,8 +33,8 @@ public:
 	void CameraOrbit(const Model& model);
 	void FocusGeometry(const Model& model);
 	const float3* GetPosition() const { return &frustum->pos; };
-	float4x4 GetProjectionMatrix();
-	float4x4 GetViewMatrix();
+	const float4x4& GetProjectionMatrix();
+	const float4x4& GetViewMatrix();
 
 	inline const float GetCameraSpeed() const { return cameraSpeed; }
 	inline const float2 GetMouseSensitivity() const { return mouseSensitivity; }

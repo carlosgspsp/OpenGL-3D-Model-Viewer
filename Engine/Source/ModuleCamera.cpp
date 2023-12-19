@@ -54,11 +54,12 @@ bool ModuleCamera::Init()
 }
 
 
-float4x4 ModuleCamera::GetProjectionMatrix() {
-	return frustum->ProjectionMatrix();
+const float4x4& ModuleCamera::GetProjectionMatrix() {
+	float4x4 proj_matrix = frustum->ProjectionMatrix();
+	return proj_matrix;
 }
 
-float4x4 ModuleCamera::GetViewMatrix() {
+const float4x4& ModuleCamera::GetViewMatrix() {
 	float4x4 view_matrix = frustum->ViewMatrix();
 	return view_matrix;
 }

@@ -1,11 +1,11 @@
-# GameEngine
-This project is Game Engine made  for UPC videogames Master´s Degree
+# OpenGL 3D Model Viewer
+This project is 3D Model Viewer made for UPC videogames Master´s Degree
 
-- [Game Engine Github Repository](https://github.com/carlosgspsp/GameEngine)
+- [3D Model Viewer Github Repository](https://github.com/carlosgspsp/GameEngine)
 
 ## Installation
 
-Download GameEngine.zip file in [release](https://github.com/carlosgspsp/GameEngine/releases), unzip it and execute the Engine.exe file.
+Download GameEngine.zip file in [release](https://github.com/carlosgspsp/OpenGL-3D-Model-Viewer/releases), unzip it and execute the Engine.exe file.
 
 ## Controls Guide
 
